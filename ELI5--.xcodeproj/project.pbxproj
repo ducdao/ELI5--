@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1CD045051F17437400E43AA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045041F17437400E43AA9 /* AppDelegate.swift */; };
-		1CD045071F17437400E43AA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045061F17437400E43AA9 /* ViewController.swift */; };
 		1CD0450A1F17437400E43AA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CD045081F17437400E43AA9 /* Main.storyboard */; };
 		1CD0450C1F17437500E43AA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CD0450B1F17437500E43AA9 /* Assets.xcassets */; };
 		1CD0450F1F17437500E43AA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CD0450D1F17437500E43AA9 /* LaunchScreen.storyboard */; };
 		1CD0451A1F17437600E43AA9 /* ELI5__Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045191F17437600E43AA9 /* ELI5__Tests.swift */; };
 		1CD045251F17437600E43AA9 /* ELI5__UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045241F17437600E43AA9 /* ELI5__UITests.swift */; };
+		1CF28A351F204143003A568F /* MainTVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A341F204143003A568F /* MainTVController.swift */; };
+		1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A361F2043D7003A568F /* ThreadTVCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,6 @@
 /* Begin PBXFileReference section */
 		1CD045011F17437400E43AA9 /* ELI5--.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ELI5--.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CD045041F17437400E43AA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1CD045061F17437400E43AA9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1CD045091F17437400E43AA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1CD0450B1F17437500E43AA9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CD0450E1F17437500E43AA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +47,8 @@
 		1CD045201F17437600E43AA9 /* ELI5--UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ELI5--UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CD045241F17437600E43AA9 /* ELI5__UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ELI5__UITests.swift; sourceTree = "<group>"; };
 		1CD045261F17437600E43AA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1CF28A341F204143003A568F /* MainTVController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTVController.swift; path = ../MainTVController.swift; sourceTree = "<group>"; };
+		1CF28A361F2043D7003A568F /* ThreadTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTVCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				1CD045041F17437400E43AA9 /* AppDelegate.swift */,
-				1CD045061F17437400E43AA9 /* ViewController.swift */,
+				1CF28A341F204143003A568F /* MainTVController.swift */,
+				1CF28A361F2043D7003A568F /* ThreadTVCell.swift */,
 				1CD045081F17437400E43AA9 /* Main.storyboard */,
 				1CD0450B1F17437500E43AA9 /* Assets.xcassets */,
 				1CD0450D1F17437500E43AA9 /* LaunchScreen.storyboard */,
@@ -259,8 +262,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CD045071F17437400E43AA9 /* ViewController.swift in Sources */,
+				1CF28A351F204143003A568F /* MainTVController.swift in Sources */,
 				1CD045051F17437400E43AA9 /* AppDelegate.swift in Sources */,
+				1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +511,7 @@
 				1CD0452B1F17437600E43AA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1CD0452C1F17437600E43AA9 /* Build configuration list for PBXNativeTarget "ELI5--Tests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +520,7 @@
 				1CD0452E1F17437600E43AA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1CD0452F1F17437600E43AA9 /* Build configuration list for PBXNativeTarget "ELI5--UITests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +529,7 @@
 				1CD045311F17437600E43AA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
