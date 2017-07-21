@@ -57,9 +57,11 @@ class MainTVController: UITableViewController {
       
       setThreadArray(swifty)
       
-      tableView.estimatedRowHeight = 50.0
-      tableView.rowHeight = UITableViewAutomaticDimension
-      tableView.reloadData()
+      DispatchQueue.main.async {
+         tableView.estimatedRowHeight = 50.0
+         tableView.rowHeight = UITableViewAutomaticDimension
+         tableView.reloadData()
+      }
    }
 
     override func didReceiveMemoryWarning() {
@@ -76,7 +78,7 @@ class MainTVController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows
-        return 1
+        return threadArray.count
     }
 
    
