@@ -19,10 +19,22 @@ class MainTVController: UITableViewController {
 
       // Uncomment the following line to preserve selection between presentations
       // self.clearsSelectionOnViewWillAppear = false
-
-      // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-      // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    
+      var swifty : JSON?
+    
+      let session = URLSession(configuration: URLSessionConfiguration.default)
+      let request = URLRequest(url: URL(string: apiString3DayForecast)!)
+      let task: URLSessionDataTask = session.dataTask(with: request) { (receivedData, response, error) -> Void in
+      if let data = receivedData {
+      // No do-catch since no errors thrown
+            swifty = JSON(data)
+         }
+      }
+    
+      task.resume()
       
+      
+    
       tableView.estimatedRowHeight = 50.0
       tableView.rowHeight = UITableViewAutomaticDimension
       tableView.reloadData()
@@ -102,5 +114,19 @@ class MainTVController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+   
+   func extractFromJSON(json : JSON) {
+      var childrenJSON : [String:AnyObject]
+      
+      // Get to array of important information in the JSON
+      childrenJSON = json["data"]["children"]
+      
+      for child in childrenJSON {
+         var title : String = child["data"]["title"];
+         print(str)
+         
+         var category : String = child["data"]["link_flair_text"];
+         print(category)
+      }
+   }
 }
