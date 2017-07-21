@@ -86,9 +86,10 @@ class MainTVController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for:indexPath) as! ThreadTVCell
 
       // Configure the cell...
-      cell.threadTitleLabel?.text = "TITLE HERE"
-      cell.categoryLabel?.text = "CATEGORY HERE"
-      cell.hoursSincePostLabel?.text = "HOURS HERE"
+      let thisThread = threadArray[indexPath.row]
+      cell.threadTitleLabel?.text = thisThread.title
+      cell.categoryLabel?.text = thisThread.category
+      cell.hoursSincePostLabel?.text = thisThread.timeInEpoch
       
       return cell
    }
