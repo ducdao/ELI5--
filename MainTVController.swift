@@ -2,17 +2,39 @@
 //  MainTVController.swift
 //  ELI5--
 //
-//  Created by CheckoutUser on 7/19/17.
-//  Copyright © 2017 CheckoutUser. All rights reserved.
+//  Created by Duc Dao on 7/19/17.
+//  Copyright © 2017 Duc Dao. All rights reserved.
 //
 
 import UIKit
 
 class MainTVController: UITableViewController {
 
+   // Information used to populate cells in the MainTVController
+   struct ThreadFields {
+      var title : String
+      enum category {
+         case bio   = "Biology"
+         case chem  = "Chemistry"
+         case cult  = "Culture"
+         case econ  = "Economics"
+         case eng   = "Engineering"
+         case math  = "Mathematics"
+         case other = "Other"
+         case phys  = "Physics"
+         case tech  = "Technology"
+      }
+      var timeInEpoch : Double
+   }
+   
+   var threadArray : [ThreadFields]
+   
    @IBOutlet weak var threadTitleLabel: UILabel!
    @IBOutlet weak var categoryLabel: UILabel!
    @IBOutlet weak var hoursSincePostLabel: UILabel!
+   
+   // JSON from reddit.com/r/explainlikeimfive
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/.json"
    
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -23,7 +45,7 @@ class MainTVController: UITableViewController {
       var swifty : JSON?
     
       let session = URLSession(configuration: URLSessionConfiguration.default)
-      let request = URLRequest(url: URL(string: apiString3DayForecast)!)
+      let request = URLRequest(url: URL(string: GETeli5)!)
       let task: URLSessionDataTask = session.dataTask(with: request) { (receivedData, response, error) -> Void in
       if let data = receivedData {
       // No do-catch since no errors thrown
@@ -33,8 +55,8 @@ class MainTVController: UITableViewController {
     
       task.resume()
       
+      setThreadArray(swifty)
       
-    
       tableView.estimatedRowHeight = 50.0
       tableView.rowHeight = UITableViewAutomaticDimension
       tableView.reloadData()
@@ -115,18 +137,26 @@ class MainTVController: UITableViewController {
     }
     */
    
-   func extractFromJSON(json : JSON) {
+   // Extracts relevant information from a JSON
+   func setThreadArray(json : JSON) {
       var childrenJSON : [String:AnyObject]
       
       // Get to array of important information in the JSON
       childrenJSON = json["data"]["children"]
       
       for child in childrenJSON {
-         var title : String = child["data"]["title"];
-         print(str)
+         child = child["data"]
          
-         var category : String = child["data"]["link_flair_text"];
+         var title : String = child["title"]
+         var category : ThreadFields.category = child["link_flair_text"]
+         var createdInEpoch : Double = child["created"]
+         
+         print(str)
          print(category)
+         print(createdInEpoch)
+         
+         // Save information extracted from JSON
+         threadArray.append(ThreadFields(title, category, createdInEpoch))
       }
    }
 }
