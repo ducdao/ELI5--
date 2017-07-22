@@ -13,55 +13,62 @@ class MainTVController: UITableViewController {
    // Information used to populate cells in the MainTVController
    struct ThreadFields {
       var title : String
-      enum category {
-         case bio   = "Biology"
-         case chem  = "Chemistry"
-         case cult  = "Culture"
-         case econ  = "Economics"
-         case eng   = "Engineering"
-         case math  = "Mathematics"
-         case other = "Other"
-         case phys  = "Physics"
-         case tech  = "Technology"
-      }
-      var timeInEpoch : Double
+      var category : String
+      var createdInEpoch : NSNumber
    }
    
-   var threadArray : [ThreadFields]
+   enum Category : String {
+      case
+      Bio   = "Biology",
+      Chem  = "Chemistry",
+      Cult  = "Culture",
+      Econ  = "Economics",
+      Eng   = "Engineering",
+      Math  = "Mathematics",
+      Other = "Other",
+      Phys  = "Physics",
+      Tech  = "Technology"
+   }
+   
+   var threadArray : [ThreadFields] = []
    
    @IBOutlet weak var threadTitleLabel: UILabel!
    @IBOutlet weak var categoryLabel: UILabel!
    @IBOutlet weak var hoursSincePostLabel: UILabel!
    
    // JSON from reddit.com/r/explainlikeimfive
-   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/.json"
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json"
    
    override func viewDidLoad() {
       super.viewDidLoad()
 
-      // Uncomment the following line to preserve selection between presentations
+      print("STARTING APP!")
+      
+      // Uncomment following line to preserve selection between presentations
       // self.clearsSelectionOnViewWillAppear = false
     
       var swifty : JSON?
     
       let session = URLSession(configuration: URLSessionConfiguration.default)
       let request = URLRequest(url: URL(string: GETeli5)!)
-      let task: URLSessionDataTask = session.dataTask(with: request) { (receivedData, response, error) -> Void in
+      let task: URLSessionDataTask = session.dataTask(with: request) {
+         (receivedData, response, error) -> Void in
       if let data = receivedData {
       // No do-catch since no errors thrown
             swifty = JSON(data)
+         
+            print("Initializing array of threads")
+            self.setThreadArray(swifty!)
          }
       }
-    
+      
       task.resume()
       
-      setThreadArray(swifty)
-      
-      DispatchQueue.main.async {
-         tableView.estimatedRowHeight = 50.0
-         tableView.rowHeight = UITableViewAutomaticDimension
-         tableView.reloadData()
-      }
+      //DispatchQueue.main.async {
+         self.tableView.estimatedRowHeight = 50.0
+         self.tableView.rowHeight = UITableViewAutomaticDimension
+         self.tableView.reloadData()
+      //}
    }
 
     override func didReceiveMemoryWarning() {
@@ -85,11 +92,11 @@ class MainTVController: UITableViewController {
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for:indexPath) as! ThreadTVCell
 
-      // Configure the cell...
+      // Configure the cell
       let thisThread = threadArray[indexPath.row]
       cell.threadTitleLabel?.text = thisThread.title
-      cell.categoryLabel?.text = thisThread.category
-      cell.hoursSincePostLabel?.text = thisThread.timeInEpoch
+      cell.categoryLabel?.text = String(thisThread.category)
+      cell.hoursSincePostLabel?.text = String(describing: thisThread.createdInEpoch)
       
       return cell
    }
@@ -141,25 +148,29 @@ class MainTVController: UITableViewController {
     */
    
    // Extracts relevant information from a JSON
-   func setThreadArray(json : JSON) {
-      var childrenJSON : [String:AnyObject]
-      
+   func setThreadArray(_ json : JSON) {
       // Get to array of important information in the JSON
-      childrenJSON = json["data"]["children"]
+      let childrenJSON : JSON = json["data"]["children"]
       
-      for child in childrenJSON {
-         child = child["data"]
+      for (_, value):(String, JSON) in childrenJSON {
+         var data : JSON = value["data"]
          
-         var title : String = child["title"]
-         var category : ThreadFields.category = child["link_flair_text"]
-         var createdInEpoch : Double = child["created"]
+         let title : String = data["title"].string!
          
-         print(str)
-         print(category)
-         print(createdInEpoch)
+         print(title)
+         
+         let category : String = data["link_flair_text"].string!
+         let createdInEpoch = data["created"].number!
+         
+         // Debugging print statements
+         print("TITLE: " + title)
+         print("CATEGORY: " + category)
+         print("CREATED: " + String(describing: createdInEpoch))
          
          // Save information extracted from JSON
-         threadArray.append(ThreadFields(title, category, createdInEpoch))
+         threadArray.append(ThreadFields(title: title,
+                                         category: category,
+                                         createdInEpoch: createdInEpoch))
       }
    }
 }
