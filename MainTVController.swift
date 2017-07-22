@@ -10,6 +10,13 @@ import UIKit
 
 class MainTVController: UITableViewController {
 
+   // Google Custom Search API information
+   // cx: 000826048872980895053:0ntfgkywxg8=12xaw1
+   // searchType: image
+   // q : query term
+   // API key: AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ=dcazx
+   // Example endpoint hit: https://www.googleapis.com/customsearch/v1?key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&cx=000826048872980895053:0ntfgkywxg8&q=starcraft2&safe=high&searchType=image
+   
    // Information used to populate cells in the MainTVController
    struct ThreadFields {
       var title : String
@@ -37,43 +44,56 @@ class MainTVController: UITableViewController {
    @IBOutlet weak var categoryLabel: UILabel!
    @IBOutlet weak var hoursSincePostLabel: UILabel!
    
-   // JSON from reddit.com/r/explainlikeimfive
+   // Endpoints from Reddit, Google Custom Search
    let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json?limit=25"
+   let GETImgSearch : String = "https://www.googleapis.com/customsearch/v1?" +
+   "key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&" +
+   "cx=000826048872980895053:0ntfgkywxg8&" +
+   "q=starcraft2&safe=high&searchType=image"
    
    override func viewDidLoad() {
       super.viewDidLoad()
 
-      print("STARTING APP!")
+      print("STARTING APP...")
       
       // Uncomment following line to preserve selection between presentations
       // self.clearsSelectionOnViewWillAppear = false
-    
-      var swifty : JSON?
-    
-      let session = URLSession(configuration: URLSessionConfiguration.default)
-      let request = URLRequest(url: URL(string: GETeli5)!)
-      let task: URLSessionDataTask = session.dataTask(with: request) {
-         (receivedData, response, error) -> Void in
-      if let data = receivedData {
-      // No do-catch since no errors thrown
-            swifty = JSON(data)
-         
-            print("Initializing array of threads")
-            self.setThreadArray(swifty!)
-         }
-      }
       
-      task.resume()
+      // Get information from reddit
+      getJSON(GETeli5)
+      // Google image search
+      getJSON(GETImgSearch)
       
       tableView.estimatedRowHeight = 75.0
       tableView.rowHeight = UITableViewAutomaticDimension
       tableView.reloadData()
    }
+   
+   // Function that gets JSON from some API
+   func getJSON(_ apiString : String) {
+      var jsonData : JSON?
+      
+      let session = URLSession(configuration: URLSessionConfiguration.default)
+      let request = URLRequest(url: URL(string: apiString)!)
+      let task: URLSessionDataTask = session.dataTask(with: request) {
+         (receivedData, response, error) -> Void in
+         if let data = receivedData {
+            // No do-catch since no errors thrown
+            jsonData = JSON(data)
+            
+            // TODO: Make send setThreadArray as a parameter
+            print("Initializing array of threads")
+            self.setThreadArray(jsonData!)
+         }
+      }
+      
+      task.resume()
+   }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+   override func didReceiveMemoryWarning() {
+      super.didReceiveMemoryWarning()
+      // Dispose of any resources that can be recreated.
+   }
 
     // MARK: - Table view data source
 
@@ -105,42 +125,6 @@ class MainTVController: UITableViewController {
       
       return cell
    }
-    
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation

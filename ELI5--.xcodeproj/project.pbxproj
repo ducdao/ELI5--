@@ -14,6 +14,7 @@
 		1CD0451A1F17437600E43AA9 /* ELI5__Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045191F17437600E43AA9 /* ELI5__Tests.swift */; };
 		1CD045251F17437600E43AA9 /* ELI5__UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045241F17437600E43AA9 /* ELI5__UITests.swift */; };
 		1CEBEC0A1F22DD0100E9FB01 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEBEC091F22DD0100E9FB01 /* SwiftyJSON.swift */; };
+		1CEBEC0C1F2320D000E9FB01 /* puppy.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */; };
 		1CF28A351F204143003A568F /* MainTVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A341F204143003A568F /* MainTVController.swift */; };
 		1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A361F2043D7003A568F /* ThreadTVCell.swift */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		1CD045241F17437600E43AA9 /* ELI5__UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ELI5__UITests.swift; sourceTree = "<group>"; };
 		1CD045261F17437600E43AA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CEBEC091F22DD0100E9FB01 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puppy.jpeg; sourceTree = "<group>"; };
 		1CF28A341F204143003A568F /* MainTVController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTVController.swift; path = ../MainTVController.swift; sourceTree = "<group>"; };
 		1CF28A361F2043D7003A568F /* ThreadTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTVCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +108,7 @@
 				1CF28A341F204143003A568F /* MainTVController.swift */,
 				1CF28A361F2043D7003A568F /* ThreadTVCell.swift */,
 				1CD045081F17437400E43AA9 /* Main.storyboard */,
+				1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */,
 				1CD0450B1F17437500E43AA9 /* Assets.xcassets */,
 				1CD0450D1F17437500E43AA9 /* LaunchScreen.storyboard */,
 				1CD045101F17437500E43AA9 /* Info.plist */,
@@ -238,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CEBEC0C1F2320D000E9FB01 /* puppy.jpeg in Resources */,
 				1CD0450F1F17437500E43AA9 /* LaunchScreen.storyboard in Resources */,
 				1CD0450C1F17437500E43AA9 /* Assets.xcassets in Resources */,
 				1CD0450A1F17437400E43AA9 /* Main.storyboard in Resources */,
