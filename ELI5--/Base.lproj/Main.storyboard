@@ -51,7 +51,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="categoryLabel" destination="gzl-Uu-Vrw" id="r3n-lt-aZ9"/>
-                                    <outlet property="hoursSinceLastPostLabel" destination="bmn-HM-Jpj" id="0G5-yr-rYr"/>
                                     <outlet property="hoursSincePostLabel" destination="bmn-HM-Jpj" id="gjF-RT-odI"/>
                                     <outlet property="threadTitleLabel" destination="rmx-Vi-nx0" id="4Il-JK-HPV"/>
                                     <segue destination="cPF-n6-wES" kind="show" id="smC-3l-Q1Q"/>

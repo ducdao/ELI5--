@@ -75,10 +75,6 @@ class MainTVController: UITableViewController {
       // Get information from reddit
       getJSON(GETeli5)
       
-      DispatchQueue.main.async {
-         self.tableView.reloadData()
-      }
-      
       // Google image search
       //getJSON(GETImgSearch)
    }
@@ -132,9 +128,9 @@ class MainTVController: UITableViewController {
       cell.categoryLabel!.text = thisThread.category
       cell.hoursSincePostLabel!.text = String(describing: thisThread.createdInEpoch)
       
-      //cell.threadTitleLabel?.text = "THREAD TITLE"
-      //cell.categoryLabel?.text = "CATEGORY HERE"
-      //cell.hoursSincePostLabel?.text = "HOURS HERE"
+      //cell.threadTitleLabel!.text = "THREAD TITLE"
+      //cell.categoryLabel!.text = "CATEGORY HERE"
+      //cell.hoursSincePostLabel!.text = "HOURS HERE"
       
       return cell
    }
@@ -171,10 +167,14 @@ class MainTVController: UITableViewController {
          print()
          
          // Save information extracted from JSON
-         self.threadList.append(RedditThread(title: title,
+         threadList.append(RedditThread(title: title,
                                          category: category,
                                          createdInEpoch: createdInEpoch,
                                          url: url))
+      }
+      
+      DispatchQueue.main.async {
+         self.tableView.reloadData()
       }
       
       print(threadList.count)
