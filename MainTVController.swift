@@ -15,6 +15,7 @@ class MainTVController: UITableViewController {
       var title : String
       var category : String
       var createdInEpoch : NSNumber
+      var url : String
    }
    
    enum Category : String {
@@ -37,7 +38,7 @@ class MainTVController: UITableViewController {
    @IBOutlet weak var hoursSincePostLabel: UILabel!
    
    // JSON from reddit.com/r/explainlikeimfive
-   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json"
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json?limit=25"
    
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -64,11 +65,9 @@ class MainTVController: UITableViewController {
       
       task.resume()
       
-      //DispatchQueue.main.async {
-         self.tableView.estimatedRowHeight = 50.0
-         self.tableView.rowHeight = UITableViewAutomaticDimension
-         self.tableView.reloadData()
-      //}
+      tableView.estimatedRowHeight = 75.0
+      tableView.rowHeight = UITableViewAutomaticDimension
+      tableView.reloadData()
    }
 
     override func didReceiveMemoryWarning() {
@@ -83,20 +82,26 @@ class MainTVController: UITableViewController {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Return the number of rows
-        return threadArray.count
-    }
+   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+   // Return the number of rows
+      //return threadArray.count
+      return 25
+   }
 
    
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for:indexPath) as! ThreadTVCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! ThreadTVCell
 
       // Configure the cell
-      let thisThread = threadArray[indexPath.row]
-      cell.threadTitleLabel?.text = thisThread.title
-      cell.categoryLabel?.text = String(thisThread.category)
-      cell.hoursSincePostLabel?.text = String(describing: thisThread.createdInEpoch)
+      //let thisThread = threadArray[indexPath.row]
+      //cell.threadTitleLabel?.text = thisThread.title
+      //cell.categoryLabel?.text = thisThread.category
+      //cell.hoursSincePostLabel?.text = String(describing: thisThread.createdInEpoch)
+      //cell.urlText?.text = thisThread.url
+      
+      cell.threadTitleLabel?.text = "THREAD TITLE"
+      cell.categoryLabel?.text = "CATEGORY HERE"
+      cell.hoursSincePostLabel?.text = "HOURS HERE"
       
       return cell
    }
@@ -155,22 +160,24 @@ class MainTVController: UITableViewController {
       for (_, value):(String, JSON) in childrenJSON {
          var data : JSON = value["data"]
          
-         let title : String = data["title"].string!
-         
-         print(title)
-         
-         let category : String = data["link_flair_text"].string!
+         let title = data["title"].string!
+         //let category = data["link_flair_text"].string!
          let createdInEpoch = data["created"].number!
+         let url = data["url"].string!
          
          // Debugging print statements
          print("TITLE: " + title)
-         print("CATEGORY: " + category)
+         print("CATEGORY: ")
          print("CREATED: " + String(describing: createdInEpoch))
+         print("URL: " + url)
          
          // Save information extracted from JSON
-         threadArray.append(ThreadFields(title: title,
-                                         category: category,
-                                         createdInEpoch: createdInEpoch))
+         self.threadArray.append(ThreadFields(title: title,
+                                         category: "CATEGORY",
+                                         createdInEpoch: createdInEpoch,
+                                         url: url))
       }
+      
+      print(threadArray.count)
    }
 }

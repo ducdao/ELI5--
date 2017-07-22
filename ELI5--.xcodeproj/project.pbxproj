@@ -13,6 +13,7 @@
 		1CD0450F1F17437500E43AA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CD0450D1F17437500E43AA9 /* LaunchScreen.storyboard */; };
 		1CD0451A1F17437600E43AA9 /* ELI5__Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045191F17437600E43AA9 /* ELI5__Tests.swift */; };
 		1CD045251F17437600E43AA9 /* ELI5__UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD045241F17437600E43AA9 /* ELI5__UITests.swift */; };
+		1CEBEC0A1F22DD0100E9FB01 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEBEC091F22DD0100E9FB01 /* SwiftyJSON.swift */; };
 		1CF28A351F204143003A568F /* MainTVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A341F204143003A568F /* MainTVController.swift */; };
 		1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A361F2043D7003A568F /* ThreadTVCell.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		1CD045201F17437600E43AA9 /* ELI5--UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ELI5--UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CD045241F17437600E43AA9 /* ELI5__UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ELI5__UITests.swift; sourceTree = "<group>"; };
 		1CD045261F17437600E43AA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1CEBEC091F22DD0100E9FB01 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		1CF28A341F204143003A568F /* MainTVController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTVController.swift; path = ../MainTVController.swift; sourceTree = "<group>"; };
 		1CF28A361F2043D7003A568F /* ThreadTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTVCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				1CD045041F17437400E43AA9 /* AppDelegate.swift */,
+				1CEBEC091F22DD0100E9FB01 /* SwiftyJSON.swift */,
 				1CF28A341F204143003A568F /* MainTVController.swift */,
 				1CF28A361F2043D7003A568F /* ThreadTVCell.swift */,
 				1CD045081F17437400E43AA9 /* Main.storyboard */,
@@ -265,6 +268,7 @@
 				1CF28A351F204143003A568F /* MainTVController.swift in Sources */,
 				1CD045051F17437400E43AA9 /* AppDelegate.swift in Sources */,
 				1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */,
+				1CEBEC0A1F22DD0100E9FB01 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
