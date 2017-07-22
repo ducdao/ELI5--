@@ -9,7 +9,7 @@
 import Foundation
 
 // Information used to populate cells in the MainTVController
-struct ThreadFields {
+struct RedditThread {
    var title : String
    var category : String
    var createdInEpoch : NSNumber

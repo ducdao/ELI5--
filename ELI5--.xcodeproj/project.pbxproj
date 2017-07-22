@@ -17,7 +17,7 @@
 		1CEBEC0C1F2320D000E9FB01 /* puppy.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */; };
 		1CF28A351F204143003A568F /* MainTVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A341F204143003A568F /* MainTVController.swift */; };
 		1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A361F2043D7003A568F /* ThreadTVCell.swift */; };
-		1CF84BB01F23FBB5004499B4 /* ThreadFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF84BAF1F23FBB5004499B4 /* ThreadFields.swift */; };
+		1CF84BB01F23FBB5004499B4 /* RedditThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF84BAF1F23FBB5004499B4 /* RedditThread.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +54,7 @@
 		1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puppy.jpeg; sourceTree = "<group>"; };
 		1CF28A341F204143003A568F /* MainTVController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTVController.swift; path = ../MainTVController.swift; sourceTree = "<group>"; };
 		1CF28A361F2043D7003A568F /* ThreadTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTVCell.swift; sourceTree = "<group>"; };
-		1CF84BAF1F23FBB5004499B4 /* ThreadFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadFields.swift; sourceTree = "<group>"; };
+		1CF84BAF1F23FBB5004499B4 /* RedditThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditThread.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +107,7 @@
 			children = (
 				1CD045041F17437400E43AA9 /* AppDelegate.swift */,
 				1CEBEC091F22DD0100E9FB01 /* SwiftyJSON.swift */,
-				1CF84BAF1F23FBB5004499B4 /* ThreadFields.swift */,
+				1CF84BAF1F23FBB5004499B4 /* RedditThread.swift */,
 				1CF28A341F204143003A568F /* MainTVController.swift */,
 				1CF28A361F2043D7003A568F /* ThreadTVCell.swift */,
 				1CD045081F17437400E43AA9 /* Main.storyboard */,
@@ -276,7 +276,7 @@
 				1CD045051F17437400E43AA9 /* AppDelegate.swift in Sources */,
 				1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */,
 				1CEBEC0A1F22DD0100E9FB01 /* SwiftyJSON.swift in Sources */,
-				1CF84BB01F23FBB5004499B4 /* ThreadFields.swift in Sources */,
+				1CF84BB01F23FBB5004499B4 /* RedditThread.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -48,7 +48,7 @@ class MainTVController: UITableViewController {
    // API key: AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ=dcazx
    // Example endpoint hit: https://www.googleapis.com/customsearch/v1?key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&cx=000826048872980895053:0ntfgkywxg8&q=starcraft2&safe=high&searchType=image
    
-   var threadArray : [ThreadFields] = []
+   var threadList = [RedditThread]()
    
    @IBOutlet weak var threadTitleLabel: UILabel!
    @IBOutlet weak var categoryLabel: UILabel!
@@ -97,7 +97,7 @@ class MainTVController: UITableViewController {
             
             // TODO: Make send setThreadArray as a parameter
             print("Initializing array of threads")
-            self.setThreadArray(jsonData!)
+            self.setThreadList(jsonData!)
          }
       }
       
@@ -118,19 +118,15 @@ class MainTVController: UITableViewController {
    
    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
    // Return the number of rows
-      return threadArray.count
+      return threadList.count
    }
 
    
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "threadCell", for:indexPath) as! ThreadTVCell
-
-      // Configure the cell
-      let thisThread = threadArray[indexPath.row]
       
-      print(thisThread.title)
-      print(thisThread.category)
-      print(String(describing: thisThread.createdInEpoch))
+      // Configure the cell
+      let thisThread = threadList[indexPath.row]
       
       cell.threadTitleLabel!.text = thisThread.title
       cell.categoryLabel!.text = thisThread.category
@@ -155,7 +151,7 @@ class MainTVController: UITableViewController {
     */
    
    // Extracts relevant information from a JSON
-   func setThreadArray(_ json : JSON) {
+   func setThreadList(_ json : JSON) {
       // Get to array of important information in the JSON
       let childrenJSON : JSON = json["data"]["children"]
       
@@ -172,14 +168,17 @@ class MainTVController: UITableViewController {
          print("CATEGORY: " + category)
          print("CREATED: " + String(describing: createdInEpoch))
          print("URL: " + url)
+         print()
          
          // Save information extracted from JSON
-         self.threadArray.append(ThreadFields(title: title,
+         self.threadList.append(RedditThread(title: title,
                                          category: category,
                                          createdInEpoch: createdInEpoch,
                                          url: url))
       }
       
-      print(threadArray.count)
+      print(threadList.count)
+      
+      return
    }
 }
