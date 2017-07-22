@@ -50,12 +50,8 @@ class MainTVController: UITableViewController {
    
    var threadList = [RedditThread]()
    
-   @IBOutlet weak var threadTitleLabel: UILabel!
-   @IBOutlet weak var categoryLabel: UILabel!
-   @IBOutlet weak var hoursSincePostLabel: UILabel!
-   
    // Endpoints from Reddit, Google Custom Search
-   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json?limit=25"
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/.json"
    let GETImgSearch : String = "https://www.googleapis.com/customsearch/v1?" +
    "key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&" +
    "cx=000826048872980895053:0ntfgkywxg8&" +
@@ -63,14 +59,12 @@ class MainTVController: UITableViewController {
    
    override func viewDidLoad() {
       super.viewDidLoad()
-
-      self.tableView.estimatedRowHeight = 75.0
-      self.tableView.rowHeight = UITableViewAutomaticDimension
       
       print("STARTING APP...")
       
-      // Uncomment following line to preserve selection between presentations
-      // self.clearsSelectionOnViewWillAppear = false
+      refreshControl = UIRefreshControl()
+      refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+      refreshControl?.addTarget(self, action: Selector("refresh:"), for: UIControlEvents.valueChanged)
       
       // Get information from reddit
       getJSON(GETeli5)
@@ -106,18 +100,25 @@ class MainTVController: UITableViewController {
    }
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // Return the number of sections
-        return 1
-    }
+   
+   func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+      return 100
+   }
+   
+   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+      return UITableViewAutomaticDimension
+   }
+   
+   override func numberOfSections(in tableView: UITableView) -> Int {
+      // Return the number of sections
+      return 1
+   }
    
    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
    // Return the number of rows
       return threadList.count
    }
 
-   
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "threadCell", for:indexPath) as! ThreadTVCell
       
@@ -126,7 +127,7 @@ class MainTVController: UITableViewController {
       
       cell.threadTitleLabel!.text = thisThread.title
       cell.categoryLabel!.text = thisThread.category
-      cell.hoursSincePostLabel!.text = String(describing: thisThread.createdInEpoch)
+      cell.hoursSincePostLabel!.text = formatDate(thisThread.createdInEpoch)
       
       //cell.threadTitleLabel!.text = "THREAD TITLE"
       //cell.categoryLabel!.text = "CATEGORY HERE"
@@ -156,7 +157,7 @@ class MainTVController: UITableViewController {
          
          let title = data["title"].string!
          let category : String = data["link_flair_text"].string ?? "Other"
-         let createdInEpoch = data["created"].number!
+         let createdInEpoch = data["created"].double!
          let url = data["url"].string!
          
          // Debugging print statements
@@ -175,10 +176,21 @@ class MainTVController: UITableViewController {
       
       DispatchQueue.main.async {
          self.tableView.reloadData()
+         self.refreshControl?.endRefreshing()
       }
       
       print(threadList.count)
+   }
+   
+   // Formats dates from double to string
+   func formatDate(_ time : Double) -> String {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "h:mm a MMMM dd, yyyy"
       
-      return
+      return formatter.string(from: Date(timeIntervalSince1970: time))
+   }
+   
+   func refresh(sender:AnyObject) {
+      getJSON(GETeli5)
    }
 }

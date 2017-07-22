@@ -28,7 +28,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duc Dao" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3XI-wc-050">
-                                <rect key="frame" x="156.5" y="627" width="62" height="20"/>
+                                <rect key="frame" x="156.5" y="676" width="62" height="20"/>
                                 <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,7 +38,7 @@
                         <constraints>
                             <constraint firstItem="bRl-gI-14x" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="44W-tC-I17"/>
                             <constraint firstItem="3XI-wc-050" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4ls-XS-RnC"/>
-                            <constraint firstItem="3XI-wc-050" firstAttribute="top" secondItem="bRl-gI-14x" secondAttribute="bottom" constant="401" id="HPe-Iz-wyE"/>
+                            <constraint firstItem="3XI-wc-050" firstAttribute="top" secondItem="bRl-gI-14x" secondAttribute="bottom" constant="450" id="HPe-Iz-wyE"/>
                             <constraint firstItem="bRl-gI-14x" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="130" id="pKI-4R-GrY"/>
                         </constraints>
                     </view>

@@ -12,6 +12,6 @@ import Foundation
 struct RedditThread {
    var title : String
    var category : String
-   var createdInEpoch : NSNumber
+   var createdInEpoch : Double
    var url : String
 }
