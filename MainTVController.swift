@@ -48,14 +48,6 @@ class MainTVController: UITableViewController {
    // API key: AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ=dcazx
    // Example endpoint hit: https://www.googleapis.com/customsearch/v1?key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&cx=000826048872980895053:0ntfgkywxg8&q=starcraft2&safe=high&searchType=image
    
-   // Information used to populate cells in the MainTVController
-   struct ThreadFields {
-      var title : String
-      var category : String
-      var createdInEpoch : NSNumber
-      var url : String
-   }
-   
    var threadArray : [ThreadFields] = []
    
    @IBOutlet weak var threadTitleLabel: UILabel!
