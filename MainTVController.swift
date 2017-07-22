@@ -8,6 +8,39 @@
 
 import UIKit
 
+// Category colors used in ELI5 subreddit
+extension UIColor {
+   struct ELI5Categories {
+      static var Mathematics : UIColor {
+         return UIColor(red: 129, green: 199, blue: 132, alpha: 1)
+      }
+      static var Economics : UIColor {
+         return UIColor(red: 149, green: 117, blue: 205, alpha: 1)
+      }
+      static var Culture : UIColor {
+         return UIColor(red: 121, green: 134, blue: 203, alpha: 1)
+      }
+      static var Biology : UIColor {
+         return UIColor(red: 77, green: 182, blue: 172, alpha: 1)
+      }
+      static var Chemistry : UIColor {
+         return UIColor(red: 240, green: 98, blue: 146, alpha: 1)
+      }
+      static var Physics : UIColor {
+         return UIColor(red: 79, green: 195, blue: 247, alpha: 1)
+      }
+      static var Technology : UIColor {
+         return UIColor(red: 120, green: 144, blue: 156, alpha: 1)
+      }
+      static var Engineering : UIColor {
+         return UIColor(red: 161, green: 136, blue: 127, alpha: 1)
+      }
+      static var Other : UIColor {
+         return UIColor(red: 158, green: 158, blue: 158, alpha: 1)
+      }
+   }
+}
+
 class MainTVController: UITableViewController {
 
    // Google Custom Search API information
@@ -23,19 +56,6 @@ class MainTVController: UITableViewController {
       var category : String
       var createdInEpoch : NSNumber
       var url : String
-   }
-   
-   enum Category : String {
-      case
-      Bio   = "Biology",
-      Chem  = "Chemistry",
-      Cult  = "Culture",
-      Econ  = "Economics",
-      Eng   = "Engineering",
-      Math  = "Mathematics",
-      Other = "Other",
-      Phys  = "Physics",
-      Tech  = "Technology"
    }
    
    var threadArray : [ThreadFields] = []
@@ -113,15 +133,14 @@ class MainTVController: UITableViewController {
       let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! ThreadTVCell
 
       // Configure the cell
-      //let thisThread = threadArray[indexPath.row]
-      //cell.threadTitleLabel?.text = thisThread.title
-      //cell.categoryLabel?.text = thisThread.category
-      //cell.hoursSincePostLabel?.text = String(describing: thisThread.createdInEpoch)
-      //cell.urlText?.text = thisThread.url
+      let thisThread = threadArray[indexPath.row]
+      cell.threadTitleLabel?.text = thisThread.title
+      cell.categoryLabel?.text = thisThread.category
+      cell.hoursSincePostLabel?.text = String(describing: thisThread.createdInEpoch)
       
-      cell.threadTitleLabel?.text = "THREAD TITLE"
-      cell.categoryLabel?.text = "CATEGORY HERE"
-      cell.hoursSincePostLabel?.text = "HOURS HERE"
+      //cell.threadTitleLabel?.text = "THREAD TITLE"
+      //cell.categoryLabel?.text = "CATEGORY HERE"
+      //cell.hoursSincePostLabel?.text = "HOURS HERE"
       
       return cell
    }
@@ -129,7 +148,8 @@ class MainTVController: UITableViewController {
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // In a storyboard-based application, you will often want to do a little 
+    // preparation before navigation.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
