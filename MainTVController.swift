@@ -10,34 +10,32 @@ import UIKit
 
 // Category colors used in ELI5 subreddit
 extension UIColor {
-   struct ELI5Categories {
-      static var Mathematics : UIColor {
-         return UIColor(red: 129, green: 199, blue: 132, alpha: 1)
-      }
-      static var Economics : UIColor {
-         return UIColor(red: 149, green: 117, blue: 205, alpha: 1)
-      }
-      static var Culture : UIColor {
-         return UIColor(red: 121, green: 134, blue: 203, alpha: 1)
-      }
-      static var Biology : UIColor {
-         return UIColor(red: 77, green: 182, blue: 172, alpha: 1)
-      }
-      static var Chemistry : UIColor {
-         return UIColor(red: 240, green: 98, blue: 146, alpha: 1)
-      }
-      static var Physics : UIColor {
-         return UIColor(red: 79, green: 195, blue: 247, alpha: 1)
-      }
-      static var Technology : UIColor {
-         return UIColor(red: 120, green: 144, blue: 156, alpha: 1)
-      }
-      static var Engineering : UIColor {
-         return UIColor(red: 161, green: 136, blue: 127, alpha: 1)
-      }
-      static var Other : UIColor {
-         return UIColor(red: 158, green: 158, blue: 158, alpha: 1)
-      }
+   static var Mathematics : UIColor {
+      return UIColor(red: 129, green: 199, blue: 132, alpha: 1)
+   }
+   static var Economics : UIColor {
+      return UIColor(red: 149, green: 117, blue: 205, alpha: 1)
+   }
+   static var Culture : UIColor {
+      return UIColor(red: 121, green: 134, blue: 203, alpha: 1)
+   }
+   static var Biology : UIColor {
+      return UIColor(red: 77, green: 182, blue: 172, alpha: 1)
+   }
+   static var Chemistry : UIColor {
+      return UIColor(red: 240, green: 98, blue: 146, alpha: 1)
+   }
+   static var Physics : UIColor {
+      return UIColor(red: 79, green: 195, blue: 247, alpha: 1)
+   }
+   static var Technology : UIColor {
+      return UIColor(red: 120, green: 144, blue: 156, alpha: 1)
+   }
+   static var Engineering : UIColor {
+      return UIColor(red: 161, green: 136, blue: 127, alpha: 1)
+   }
+   static var Other : UIColor {
+      return UIColor(red: 158, green: 158, blue: 158, alpha: 1)
    }
 }
 
@@ -74,6 +72,9 @@ class MainTVController: UITableViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
 
+      self.tableView.estimatedRowHeight = 75.0
+      self.tableView.rowHeight = UITableViewAutomaticDimension
+      
       print("STARTING APP...")
       
       // Uncomment following line to preserve selection between presentations
@@ -81,12 +82,13 @@ class MainTVController: UITableViewController {
       
       // Get information from reddit
       getJSON(GETeli5)
-      // Google image search
-      getJSON(GETImgSearch)
       
-      tableView.estimatedRowHeight = 75.0
-      tableView.rowHeight = UITableViewAutomaticDimension
-      tableView.reloadData()
+      DispatchQueue.main.async {
+         self.tableView.reloadData()
+      }
+      
+      // Google image search
+      //getJSON(GETImgSearch)
    }
    
    // Function that gets JSON from some API
@@ -121,22 +123,26 @@ class MainTVController: UITableViewController {
         // Return the number of sections
         return 1
     }
-
+   
    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
    // Return the number of rows
-      //return threadArray.count
-      return 25
+      return threadArray.count
    }
 
    
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for:indexPath) as! ThreadTVCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: "threadCell", for:indexPath) as! ThreadTVCell
 
       // Configure the cell
       let thisThread = threadArray[indexPath.row]
-      cell.threadTitleLabel?.text = thisThread.title
-      cell.categoryLabel?.text = thisThread.category
-      cell.hoursSincePostLabel?.text = String(describing: thisThread.createdInEpoch)
+      
+      print(thisThread.title)
+      print(thisThread.category)
+      print(String(describing: thisThread.createdInEpoch))
+      
+      cell.threadTitleLabel!.text = thisThread.title
+      cell.categoryLabel!.text = thisThread.category
+      cell.hoursSincePostLabel!.text = String(describing: thisThread.createdInEpoch)
       
       //cell.threadTitleLabel?.text = "THREAD TITLE"
       //cell.categoryLabel?.text = "CATEGORY HERE"
@@ -165,19 +171,19 @@ class MainTVController: UITableViewController {
          var data : JSON = value["data"]
          
          let title = data["title"].string!
-         //let category = data["link_flair_text"].string!
+         let category : String = data["link_flair_text"].string ?? "Other"
          let createdInEpoch = data["created"].number!
          let url = data["url"].string!
          
          // Debugging print statements
          print("TITLE: " + title)
-         print("CATEGORY: ")
+         print("CATEGORY: " + category)
          print("CREATED: " + String(describing: createdInEpoch))
          print("URL: " + url)
          
          // Save information extracted from JSON
          self.threadArray.append(ThreadFields(title: title,
-                                         category: "CATEGORY",
+                                         category: category,
                                          createdInEpoch: createdInEpoch,
                                          url: url))
       }

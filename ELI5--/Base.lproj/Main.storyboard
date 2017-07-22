@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="53" id="Ws0-6F-qZZ" customClass="ThreadTVCell" customModule="ELI5__" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="threadCell" rowHeight="53" id="Ws0-6F-qZZ" customClass="ThreadTVCell" customModule="ELI5__" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="53"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ws0-6F-qZZ" id="SRG-0z-4zx">
@@ -50,9 +50,10 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="categoryLabel" destination="gzl-Uu-Vrw" id="fhc-Mw-d1F"/>
-                                    <outlet property="hoursSincePostLabel" destination="bmn-HM-Jpj" id="10f-Ba-HFo"/>
-                                    <outlet property="threadTitleLabel" destination="rmx-Vi-nx0" id="NdO-vP-bIH"/>
+                                    <outlet property="categoryLabel" destination="gzl-Uu-Vrw" id="r3n-lt-aZ9"/>
+                                    <outlet property="hoursSinceLastPostLabel" destination="bmn-HM-Jpj" id="0G5-yr-rYr"/>
+                                    <outlet property="hoursSincePostLabel" destination="bmn-HM-Jpj" id="gjF-RT-odI"/>
+                                    <outlet property="threadTitleLabel" destination="rmx-Vi-nx0" id="4Il-JK-HPV"/>
                                     <segue destination="cPF-n6-wES" kind="show" id="smC-3l-Q1Q"/>
                                 </connections>
                             </tableViewCell>
