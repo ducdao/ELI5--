@@ -51,7 +51,7 @@ class MainTVController: UITableViewController {
    var threadList = [RedditThread]()
    
    // Endpoints from Reddit, Google Custom Search
-   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/.json"
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json"
    let GETImgSearch : String = "https://www.googleapis.com/customsearch/v1?" +
    "key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&" +
    "cx=000826048872980895053:0ntfgkywxg8&" +

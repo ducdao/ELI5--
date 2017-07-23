@@ -21,8 +21,10 @@ class ExplanationViewController: UIViewController {
    var thread : RedditThread? {
       // Property observer, execute when thread is set
       didSet {
-         self.setText()
-         getTopExplanation((thread?.url)!)
+         setText()
+         if (explanation == nil) {
+            getTopExplanation(threadURL!)
+         }
       }
    }
    
@@ -34,12 +36,12 @@ class ExplanationViewController: UIViewController {
       if let threadTitle : String = self.thread?.title {
          print(thread?.title ?? "EMPTY")
          threadTitleLabel!.text = threadTitle
-         explanationLabel!.text = "This is some placeholder text for the explanation. I think Sacred Hearts Club is a pretty diverse album that inspires happiness." +
-          " This is some placeholder text for the explanation. I think Sacred Hearts Club is a pretty diverse album that inspires happiness."
+         //explanationLabel!.text = "This is some placeholder text for the explanation. I think Sacred Hearts Club is a pretty diverse album that inspires happiness." +
+          //" This is some placeholder text for the explanation. I think Sacred Hearts Club is a pretty diverse album that inspires happiness."
       }
       
       if let url : String = thread?.url {
-         threadURL = url
+         threadURL = url + ".json"
       }
    }
    
@@ -57,16 +59,28 @@ class ExplanationViewController: UIViewController {
             
             // TODO: Make send setThreadArray as a parameter
             print("Finding top explanation...")
+            self.parseJSON(jsonData!)
          }
       }
       
       task.resume()
    }
    
+   // Drill down to get the top explanation
+   func parseJSON(_ json : JSON?) {
+      // Index 1 contains all the comments (index contains metadata for thread
+      //var score = json?[1]["data"]["children"][0]["data"]["score"].number
+      explanation = json?[1]["data"]["children"][0]["data"]["body"].string!
+      
+      print("EXPLANATION: " + explanation!)
+      
+      explanationLabel!.text = explanation
+   }
+   
    override func viewDidLoad() {
       super.viewDidLoad()
 
       // Do any additional setup after loading the view.
-      self.setText()
+      //self.setText()
    }
 }
