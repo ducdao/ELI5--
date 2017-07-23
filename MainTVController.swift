@@ -11,31 +11,31 @@ import UIKit
 // Category colors used in ELI5 subreddit
 extension UIColor {
    static var Mathematics : UIColor {
-      return UIColor(red: 129, green: 199, blue: 132, alpha: 1)
+      return UIColor(red: 129/255, green: 199/255, blue: 132/255, alpha: 1.0)
    }
    static var Economics : UIColor {
-      return UIColor(red: 149, green: 117, blue: 205, alpha: 1)
+      return UIColor(red: 149/255, green: 117/255, blue: 205/255, alpha: 1.0)
    }
    static var Culture : UIColor {
-      return UIColor(red: 121, green: 134, blue: 203, alpha: 1)
+      return UIColor(red: 121/255, green: 134/255, blue: 203/255, alpha: 1.0)
    }
    static var Biology : UIColor {
-      return UIColor(red: 77, green: 182, blue: 172, alpha: 1)
+      return UIColor(red: 77/255, green: 182/255, blue: 172/255, alpha: 1.0)
    }
    static var Chemistry : UIColor {
-      return UIColor(red: 240, green: 98, blue: 146, alpha: 1)
+      return UIColor(red: 240/255, green: 98/255, blue: 146/255, alpha: 1.0)
    }
    static var Physics : UIColor {
-      return UIColor(red: 79, green: 195, blue: 247, alpha: 1)
+      return UIColor(red: 79/255, green: 195/255, blue: 247/255, alpha: 1.0)
    }
    static var Technology : UIColor {
-      return UIColor(red: 120, green: 144, blue: 156, alpha: 1)
+      return UIColor(red: 120/255, green: 144/255, blue: 156/255, alpha: 1.0)
    }
    static var Engineering : UIColor {
-      return UIColor(red: 161, green: 136, blue: 127, alpha: 1)
+      return UIColor(red: 161/255, green: 136/255, blue: 127/255, alpha: 1.0)
    }
    static var Other : UIColor {
-      return UIColor(red: 158, green: 158, blue: 158, alpha: 1)
+      return UIColor(red: 158/255, green: 158/255, blue: 158/255, alpha: 1.0)
    }
 }
 
@@ -99,8 +99,10 @@ class MainTVController: UITableViewController {
       // Dispose of any resources that can be recreated.
    }
 
-    // MARK: - Table view data source
-   
+   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+      cell.backgroundColor = UIColor.clear
+   }
+
    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
       return 100
    }
@@ -125,13 +127,35 @@ class MainTVController: UITableViewController {
       // Configure the cell
       let thisThread = threadList[indexPath.row]
       
+      cell.contentView.backgroundColor = .clear
+      
+      // Color the cell with its respective category
+      colorCell(thisThread.category, &(cell.contentView.backgroundColor!))
+      /*
+      switch(thisThread.category) {
+      case "Mathematics":
+         cell.contentView.backgroundColor = .Mathematics
+      case "Economics":
+         cell.contentView.backgroundColor = .Economics
+      case "Culture":
+         cell.contentView.backgroundColor = .Culture
+      case "Biology":
+         cell.contentView.backgroundColor = .Biology
+      case "Chemistry":
+         cell.contentView.backgroundColor = .Chemistry
+      case "Physics":
+         cell.contentView.backgroundColor = .Physics
+      case "Technology":
+         cell.contentView.backgroundColor = .Technology
+      case "Engineering":
+         cell.contentView.backgroundColor = .Engineering
+      default:
+         cell.contentView.backgroundColor = .Other
+      }*/
+      
       cell.threadTitleLabel!.text = thisThread.title
       cell.categoryLabel!.text = thisThread.category
       cell.hoursSincePostLabel!.text = formatDate(thisThread.createdInEpoch)
-      
-      //cell.threadTitleLabel!.text = "THREAD TITLE"
-      //cell.categoryLabel!.text = "CATEGORY HERE"
-      //cell.hoursSincePostLabel!.text = "HOURS HERE"
       
       return cell
    }
@@ -180,6 +204,29 @@ class MainTVController: UITableViewController {
       }
       
       print(threadList.count)
+   }
+   
+   func colorCell(_ category : String, _ cell : inout UIColor) {
+      switch(category) {
+         case "Mathematics":
+            cell = UIColor.Mathematics
+         case "Economics":
+            cell = UIColor.Economics
+         case "Culture":
+            cell = UIColor.Culture
+         case "Biology":
+            cell = UIColor.Biology
+         case "Chemistry":
+            cell = UIColor.Chemistry
+         case "Physics":
+            cell = UIColor.Physics
+         case "Technology":
+            cell = UIColor.Technology
+         case "Engineering":
+            cell = UIColor.Engineering
+         default:
+            cell = UIColor.Other
+      }
    }
    
    // Formats dates from double to string
