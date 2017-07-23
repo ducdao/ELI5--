@@ -60,13 +60,12 @@ class MainTVController: UITableViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
       
-      print("STARTING APP...")
-      
+      // TODO: Fix pull to refresh code
       refreshControl = UIRefreshControl()
       refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
-      refreshControl?.addTarget(self, action: Selector("refresh:"), for: UIControlEvents.valueChanged)
+      refreshControl?.addTarget(self, action: Selector(("refresh:")), for: UIControlEvents.valueChanged)
       
-      // Get information from reddit
+      // Get JSON from explainlikeimfive subrediit
       getJSON(GETeli5)
       
       // Google image search
@@ -104,7 +103,7 @@ class MainTVController: UITableViewController {
    }
 
    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-      return 100
+      return 72
    }
    
    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -124,35 +123,15 @@ class MainTVController: UITableViewController {
    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "threadCell", for:indexPath) as! ThreadTVCell
       
-      // Configure the cell
       let thisThread = threadList[indexPath.row]
       
+      // Set default value so that we don't unwrap nil
       cell.contentView.backgroundColor = .clear
       
       // Color the cell with its respective category
-      colorCell(thisThread.category, &(cell.contentView.backgroundColor!))
-      /*
-      switch(thisThread.category) {
-      case "Mathematics":
-         cell.contentView.backgroundColor = .Mathematics
-      case "Economics":
-         cell.contentView.backgroundColor = .Economics
-      case "Culture":
-         cell.contentView.backgroundColor = .Culture
-      case "Biology":
-         cell.contentView.backgroundColor = .Biology
-      case "Chemistry":
-         cell.contentView.backgroundColor = .Chemistry
-      case "Physics":
-         cell.contentView.backgroundColor = .Physics
-      case "Technology":
-         cell.contentView.backgroundColor = .Technology
-      case "Engineering":
-         cell.contentView.backgroundColor = .Engineering
-      default:
-         cell.contentView.backgroundColor = .Other
-      }*/
+      colorObject(thisThread.category, &(cell.contentView.backgroundColor!))
       
+      // Set cell's text
       cell.threadTitleLabel!.text = thisThread.title
       cell.categoryLabel!.text = thisThread.category
       cell.hoursSincePostLabel!.text = formatDate(thisThread.createdInEpoch)
@@ -160,16 +139,18 @@ class MainTVController: UITableViewController {
       return cell
    }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little 
-    // preparation before navigation.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+   // In a storyboard-based application, you will often want to do a little
+   // preparation before navigation.
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      // Get the new view controller using segue.destinationViewController.
+      // Pass the selected object to the new view controller.
+      if segue.identifier == "showExplanation" {
+         if let indexPath = self.tableView.indexPathForSelectedRow {
+            let thread = threadList[(indexPath as NSIndexPath).row]
+         (segue.destination as! ExplanationViewController).thread = thread
+         }
+      }
+   }
    
    // Extracts relevant information from a JSON
    func setThreadList(_ json : JSON) {
@@ -206,35 +187,12 @@ class MainTVController: UITableViewController {
       print(threadList.count)
    }
    
-   func colorCell(_ category : String, _ cell : inout UIColor) {
-      switch(category) {
-         case "Mathematics":
-            cell = UIColor.Mathematics
-         case "Economics":
-            cell = UIColor.Economics
-         case "Culture":
-            cell = UIColor.Culture
-         case "Biology":
-            cell = UIColor.Biology
-         case "Chemistry":
-            cell = UIColor.Chemistry
-         case "Physics":
-            cell = UIColor.Physics
-         case "Technology":
-            cell = UIColor.Technology
-         case "Engineering":
-            cell = UIColor.Engineering
-         default:
-            cell = UIColor.Other
-      }
-   }
-   
-   // Formats dates from double to string
+   // Formats dates from epoch (double) to string with a specific format
    func formatDate(_ time : Double) -> String {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "h:mm a MMMM dd, yyyy"
+      let format = DateFormatter()
+      format.dateFormat = "h:mm a MMMM dd, yyyy"
       
-      return formatter.string(from: Date(timeIntervalSince1970: time))
+      return format.string(from: Date(timeIntervalSince1970: time))
    }
    
    func refresh(sender:AnyObject) {
