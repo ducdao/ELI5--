@@ -144,6 +144,8 @@ class ExplanationViewController: UIViewController {
          let responseJSON = JSON(data)
          
          print("responseString = " + String(describing: responseJSON))
+         
+         self.parseResponseJSON(responseJSON)
       }
       
       task.resume()
@@ -151,14 +153,28 @@ class ExplanationViewController: UIViewController {
    
    // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
    func createDocumentJSON() -> [String:AnyObject] {
-      let contentJSON : [String:AnyObject] = ["content" : String(describing: explanation) as AnyObject, "type" : "PLAIN_TEXT" as AnyObject]
+      let contentJSON : [String:AnyObject] = ["content" : String(describing: explanation!.trimmingCharacters(in: .newlines)) as AnyObject, "type" : "PLAIN_TEXT" as AnyObject]
       let documentJSON : [String:AnyObject] = ["document" : contentJSON as AnyObject]
       
       return documentJSON
    }
    
+   // Parse the JSON received from the POST to analyzeEntities
    func parseResponseJSON(_ json : JSON) {
+      let entities = json["entities"]
+
+      for index in 0..<entities.count {
+         let word = entities[index]["mentions"][0]["text"]["content"].string!
+         let type = entities[index]["mentions"][0]["type"].string!
+         
+         if type == "PROPER" || type == "COMMON" {
+            print(word + " " + type)
+            
+            keyWords.append(word)
+         }
+      }
       
+      print(keyWords)
    }
    
    override func viewDidLoad() {
