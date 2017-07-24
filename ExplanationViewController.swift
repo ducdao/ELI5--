@@ -32,7 +32,7 @@ class ExplanationViewController: UIViewController {
    }
    
    // Keywords taken from the explanation
-   var keyWords = [String]()
+   var keyWords = Set<String>()
    
    // Set text for the thread title and explanation
    func getTitle() {
@@ -153,8 +153,11 @@ class ExplanationViewController: UIViewController {
    
    // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
    func createDocumentJSON() -> [String:AnyObject] {
-      let contentJSON : [String:AnyObject] = ["content" : String(describing: explanation!.trimmingCharacters(in: .newlines)) as AnyObject, "type" : "PLAIN_TEXT" as AnyObject]
-      let documentJSON : [String:AnyObject] = ["document" : contentJSON as AnyObject]
+      let contentJSON : [String:AnyObject] =
+         ["content" : String(describing: explanation!.trimmingCharacters(in: .newlines)) as AnyObject,
+          "type" : "PLAIN_TEXT" as AnyObject]
+      let documentJSON : [String:AnyObject] =
+         ["document" : contentJSON as AnyObject]
       
       return documentJSON
    }
@@ -170,7 +173,7 @@ class ExplanationViewController: UIViewController {
          if type == "PROPER" || type == "COMMON" {
             print(word + " " + type)
             
-            keyWords.append(word)
+            keyWords.insert(word)
          }
       }
       
