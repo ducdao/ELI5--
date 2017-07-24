@@ -51,7 +51,7 @@ class MainTVController: UITableViewController {
    var threadList = [RedditThread]()
    
    // Endpoints from Reddit, Google Custom Search
-   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/new.json"
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/.json"
    let GETImgSearch : String = "https://www.googleapis.com/customsearch/v1?" +
    "key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&" +
    "cx=000826048872980895053:0ntfgkywxg8&" +
@@ -93,17 +93,59 @@ class MainTVController: UITableViewController {
       task.resume()
    }
 
-   override func didReceiveMemoryWarning() {
-      super.didReceiveMemoryWarning()
-      // Dispose of any resources that can be recreated.
+   // Extracts relevant information from a JSON
+   func setThreadList(_ json : JSON) {
+      // Get to array of important information in the JSON
+      let childrenJSON : JSON = json["data"]["children"]
+      
+      for (_, value):(String, JSON) in childrenJSON {
+         var data : JSON = value["data"]
+         
+         let title = data["title"].string!
+         let category : String = data["link_flair_text"].string ?? "Other"
+         let createdInEpoch = data["created"].double!
+         let url = data["url"].string!
+         
+         // Debugging print statements
+         print("TITLE: " + title)
+         print("CATEGORY: " + category)
+         print("CREATED: " + String(describing: createdInEpoch))
+         print("URL: " + url + "\n")
+         
+         // Save information extracted from JSON
+         threadList.append(RedditThread(title: title, category: category, createdInEpoch: createdInEpoch, url: url))
+      }
+      
+      DispatchQueue.main.async {
+         self.tableView.reloadData()
+         self.refreshControl?.endRefreshing()
+      }
+      
+      print(threadList.count)
+   }
+   
+   // Formats dates from epoch (double) to string with a specific format
+   func formatDate(_ time : Double) -> String {
+      let format = DateFormatter()
+      format.dateFormat = "h:mm a MMMM dd, yyyy"
+      
+      return format.string(from: Date(timeIntervalSince1970: time))
+   }
+   
+   func refresh(sender:AnyObject) {
+      getJSON(GETeli5)
    }
 
+   // ==========================================================================
+   // TABLE VIEW CODE
+   // ==========================================================================
+   
    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
       cell.backgroundColor = UIColor.clear
    }
 
    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-      return 72
+      return 36
    }
    
    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -150,52 +192,5 @@ class MainTVController: UITableViewController {
          (segue.destination as! ExplanationViewController).thread = thread
          }
       }
-   }
-   
-   // Extracts relevant information from a JSON
-   func setThreadList(_ json : JSON) {
-      // Get to array of important information in the JSON
-      let childrenJSON : JSON = json["data"]["children"]
-      
-      for (_, value):(String, JSON) in childrenJSON {
-         var data : JSON = value["data"]
-         
-         let title = data["title"].string!
-         let category : String = data["link_flair_text"].string ?? "Other"
-         let createdInEpoch = data["created"].double!
-         let url = data["url"].string!
-         
-         // Debugging print statements
-         print("TITLE: " + title)
-         print("CATEGORY: " + category)
-         print("CREATED: " + String(describing: createdInEpoch))
-         print("URL: " + url)
-         print()
-         
-         // Save information extracted from JSON
-         threadList.append(RedditThread(title: title,
-                                         category: category,
-                                         createdInEpoch: createdInEpoch,
-                                         url: url))
-      }
-      
-      DispatchQueue.main.async {
-         self.tableView.reloadData()
-         self.refreshControl?.endRefreshing()
-      }
-      
-      print(threadList.count)
-   }
-   
-   // Formats dates from epoch (double) to string with a specific format
-   func formatDate(_ time : Double) -> String {
-      let format = DateFormatter()
-      format.dateFormat = "h:mm a MMMM dd, yyyy"
-      
-      return format.string(from: Date(timeIntervalSince1970: time))
-   }
-   
-   func refresh(sender:AnyObject) {
-      getJSON(GETeli5)
    }
 }

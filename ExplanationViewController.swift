@@ -12,36 +12,39 @@ class ExplanationViewController: UIViewController {
    @IBOutlet weak var threadTitleLabel: UILabel!
    @IBOutlet weak var explanationLabel: UILabel!
    
-   @IBOutlet weak var firstImage: UIImageView!
-   @IBOutlet weak var secondImage: UIImageView!
-   @IBOutlet weak var thirdImage: UIImageView!
+   // The number of comments we want returned in the JSON
+   let maxComments : Int = 3
    
    var threadURL : String?
+   var threadTitle : String?
    var explanation : String?
    var thread : RedditThread? {
       // Property observer, execute when thread is set
       didSet {
-         setText()
-         if (explanation == nil) {
-            getTopExplanation(threadURL!)
-         }
+         // Color the background of the
+         colorObject((thread?.category)!, &self.view.backgroundColor!)
+         
+         getTitle()
+         getURL()
+         getTopExplanation(threadURL!)
       }
    }
    
+   // Keywords taken from the explanation
+   var keyWords = [String]()
+   
    // Set text for the thread title and explanation
-   func setText() {
-      // Color the background of the
-      colorObject((thread?.category)!, &self.view.backgroundColor!)
-      
-      if let threadTitle : String = self.thread?.title {
-         print(thread?.title ?? "EMPTY")
-         threadTitleLabel!.text = threadTitle
-         //explanationLabel!.text = "This is some placeholder text for the explanation. I think Sacred Hearts Club is a pretty diverse album that inspires happiness." +
-          //" This is some placeholder text for the explanation. I think Sacred Hearts Club is a pretty diverse album that inspires happiness."
+   func getTitle() {
+      if let title : String = self.thread?.title {
+         print(title)
+         self.threadTitle = title
       }
-      
+   }
+   
+   func getURL() {
       if let url : String = thread?.url {
-         threadURL = url + ".json"
+         // Modify URL to get the JSON containing the top [maxComments] comments
+         self.threadURL = url + ".json?sort=top&limit=" + String(maxComments)
       }
    }
    
@@ -54,33 +57,43 @@ class ExplanationViewController: UIViewController {
       let task: URLSessionDataTask = session.dataTask(with: request) {
          (receivedData, response, error) -> Void in
          if let data = receivedData {
+            // Index of array where all comments live. Index 0 = thread metadata
+            let commentsIndex = 1
+            var index = -1
+            
             // No do-catch since no errors thrown
             jsonData = JSON(data)
             
-            // TODO: Make send setThreadArray as a parameter
+            // Go to beginning of the comments
+            jsonData = jsonData?[commentsIndex]["data"]["children"]
+            
             print("Finding top explanation...")
-            self.parseJSON(jsonData!)
+            // Find the top comment that's NOT a stickied post
+            repeat {
+               index = index + 1
+               
+               self.explanation = jsonData?[index]["data"]["body"].string!
+            } while jsonData?[index]["data"]["stickied"].bool! == true
+               && index < self.maxComments
+            
+            print("EXPLANATION: " + self.explanation!)
+            
+            DispatchQueue.main.async {
+               self.updateUI()
+            }
          }
       }
       
       task.resume()
    }
    
-   // Drill down to get the top explanation
-   func parseJSON(_ json : JSON?) {
-      // Index 1 contains all the comments (index contains metadata for thread
-      //var score = json?[1]["data"]["children"][0]["data"]["score"].number
-      explanation = json?[1]["data"]["children"][0]["data"]["body"].string!
-      
-      print("EXPLANATION: " + explanation!)
-      
+   // Update labels in the view
+   func updateUI() {
+      threadTitleLabel!.text = threadTitle
       explanationLabel!.text = explanation
    }
    
    override func viewDidLoad() {
       super.viewDidLoad()
-
-      // Do any additional setup after loading the view.
-      //self.setText()
    }
 }

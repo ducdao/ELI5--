@@ -90,52 +90,40 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="threadTitleLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEE-zw-Gae">
-                                <rect key="frame" x="16" y="72" width="343" height="14"/>
+                                <rect key="frame" x="12" y="72" width="351" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="351" id="p0s-LA-zon"/>
+                                    <constraint firstAttribute="height" constant="32" id="ze4-IW-yfR"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="explanationLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3H-W2-RWE">
-                                <rect key="frame" x="16" y="107" width="343" height="22"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <rect key="frame" x="8" y="112" width="359" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="4w5-tZ-b65">
-                                <rect key="frame" x="0.0" y="284" width="375" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="T9K-Z7-lsd">
-                                <rect key="frame" x="0.0" y="412" width="375" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ehv-P2-hXE">
-                                <rect key="frame" x="0.0" y="539" width="375" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="leadingMargin" secondItem="P3H-W2-RWE" secondAttribute="leading" id="3eE-6R-GOh"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="tEE-zw-Gae" secondAttribute="leading" id="WLh-Xx-hcM"/>
-                            <constraint firstItem="P3H-W2-RWE" firstAttribute="top" secondItem="tEE-zw-Gae" secondAttribute="bottom" constant="21" id="XtZ-mI-s2G"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="P3H-W2-RWE" secondAttribute="trailing" id="Zkd-UK-013"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tEE-zw-Gae" secondAttribute="trailing" id="dYq-V0-3lw"/>
-                            <constraint firstItem="tEE-zw-Gae" firstAttribute="top" secondItem="GAo-fK-veB" secondAttribute="bottom" constant="8" id="y6l-Pb-mSE"/>
+                            <constraint firstItem="tEE-zw-Gae" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-4" id="1ya-wP-S7l"/>
+                            <constraint firstItem="P3H-W2-RWE" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="WWu-Pa-gO1"/>
+                            <constraint firstItem="P3H-W2-RWE" firstAttribute="top" secondItem="tEE-zw-Gae" secondAttribute="bottom" constant="8" id="a8r-Gm-zBW"/>
+                            <constraint firstItem="tEE-zw-Gae" firstAttribute="top" secondItem="GAo-fK-veB" secondAttribute="bottom" constant="8" id="bRE-yY-U4p"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="P3H-W2-RWE" secondAttribute="trailing" constant="-8" id="rIM-hZ-kwr"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Explanation" id="6bG-l1-Ixc"/>
                     <connections>
                         <outlet property="explanationLabel" destination="P3H-W2-RWE" id="sg0-3B-wth"/>
-                        <outlet property="firstImage" destination="4w5-tZ-b65" id="pM1-kl-BUt"/>
-                        <outlet property="secondImage" destination="T9K-Z7-lsd" id="wza-iQ-uVn"/>
-                        <outlet property="thirdImage" destination="ehv-P2-hXE" id="w0K-5b-qNQ"/>
                         <outlet property="threadTitleLabel" destination="tEE-zw-Gae" id="ZWU-qd-Dzo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9k0-ED-trd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="520.79999999999995" y="-116.49175412293854"/>
+            <point key="canvasLocation" x="520.5" y="-116.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tWZ-MA-VNA">
@@ -153,8 +141,61 @@
             </objects>
             <point key="canvasLocation" x="-1380" y="-115"/>
         </scene>
+        <!--Item 2-->
+        <scene sceneID="oEI-AN-tXQ">
+            <objects>
+                <viewController id="SOh-eB-sfC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7kF-Fk-0J7"/>
+                        <viewControllerLayoutGuide type="bottom" id="cgp-hM-usO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6Pn-Ru-TnR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="Yoh-8C-6ST"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vxI-ub-NIP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1258" y="-638"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="QAO-ba-8cZ">
+            <objects>
+                <viewController id="8CL-fA-DtD" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UuR-OI-lTW"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ode-Nz-cm9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wvy-a1-Sff">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="k42-ge-fM0"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HyQ-a4-iUg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1258" y="-1292"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="7r5-kb-gkj">
+            <objects>
+                <tabBarController id="eOD-T5-8l5" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="jnu-wm-g5B">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="8CL-fA-DtD" kind="relationship" relationship="viewControllers" id="746-v3-i01"/>
+                        <segue destination="SOh-eB-sfC" kind="relationship" relationship="viewControllers" id="4Co-qB-L7q"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1v2-dd-U7t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2204" y="-1006"/>
+        </scene>
     </scenes>
-    <resources>
-        <image name="puppy.jpeg" width="1600" height="1200"/>
-    </resources>
 </document>
