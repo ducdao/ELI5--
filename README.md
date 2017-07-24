@@ -3,5 +3,5 @@ ELI5-- is an iOS application that parses threads from https://www.reddit.com/r/e
 
 ELI5-- utilizes 3 APIs:
 * Reddit
+* Google Cloud Natural Language
 * Google Custom Search
-* Google Cloud Vision
