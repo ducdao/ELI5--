@@ -13,7 +13,7 @@ class ExplanationViewController: UIViewController {
    @IBOutlet weak var explanationLabel: UILabel!
    
    // The number of comments we want returned in the JSON
-   let maxComments : Int = 3
+   let maxComments : Int = 5
    
    var threadURL : String?
    var threadTitle : String?
@@ -73,8 +73,9 @@ class ExplanationViewController: UIViewController {
                index = index + 1
                
                self.explanation = jsonData?[index]["data"]["body"].string!
-            } while jsonData?[index]["data"]["stickied"].bool! == true
-               && index < self.maxComments
+            } while (jsonData?[index]["data"]["stickied"].bool! == true ||
+               jsonData?[index]["data"]["body"].string! == "[removed]") &&
+               index < self.maxComments
             
             print("EXPLANATION: " + self.explanation!)
             

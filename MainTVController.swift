@@ -51,7 +51,7 @@ class MainTVController: UITableViewController {
    var threadList = [RedditThread]()
    
    // Endpoints from Reddit, Google Custom Search
-   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/.json"
+   let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/top/.json?sort=top&t=week"
    let GETImgSearch : String = "https://www.googleapis.com/customsearch/v1?" +
    "key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&" +
    "cx=000826048872980895053:0ntfgkywxg8&" +
@@ -175,7 +175,7 @@ class MainTVController: UITableViewController {
       
       // Set cell's text
       cell.threadTitleLabel!.text = thisThread.title
-      cell.categoryLabel!.text = thisThread.category
+      cell.categoryLabel!.text = thisThread.category + " - /r/explainlikeimfive"
       cell.hoursSincePostLabel!.text = formatDate(thisThread.createdInEpoch)
       
       return cell
