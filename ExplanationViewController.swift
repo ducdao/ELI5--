@@ -12,14 +12,6 @@ class ExplanationViewController: UIViewController {
    @IBOutlet weak var threadTitleLabel: UILabel!
    @IBOutlet weak var explanationLabel: UILabel!
    
-   // Take user to thread on reddit in web browser
-   @IBAction func threadTitleGoToURL(_ sender: UITapGestureRecognizer) {
-      // Do stuff
-      let url = URL(string: thread!.url)
-      let application = UIApplication.shared
-      application.open(url!, options: [:], completionHandler: nil)
-   }
-   
    // The number of comments we want returned in the JSON
    let maxComments : Int = 5
    
@@ -108,6 +100,14 @@ class ExplanationViewController: UIViewController {
       let tap = UITapGestureRecognizer(target: self, action: #selector(self.threadTitleGoToURL(_:)))
       label.isUserInteractionEnabled = true
       label.addGestureRecognizer(tap)
+   }
+   
+   // Take user to thread on reddit in web browser
+   func threadTitleGoToURL(_ sender: UITapGestureRecognizer) {
+      // Do stuff
+      let url = URL(string: thread!.url)
+      let application = UIApplication.shared
+      application.open(url!, options: [:], completionHandler: nil)
    }
    
    override func viewDidLoad() {
