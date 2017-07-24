@@ -80,6 +80,7 @@ class ExplanationViewController: UIViewController {
             
             print("EXPLANATION: " + self.explanation!)
             
+            // Update UI on the main thread asynchronously
             DispatchQueue.main.async {
                self.updateUI()
             }
@@ -97,17 +98,45 @@ class ExplanationViewController: UIViewController {
    
    // Add ability to tap to go to reddit thread on the web
    func addTap(_ label : UILabel!) {
-      let tap = UITapGestureRecognizer(target: self, action: #selector(self.threadTitleGoToURL(_:)))
+      let tap = UITapGestureRecognizer(target: self,
+         action: #selector(self.threadTitleGoToURL(_:)))
       label.isUserInteractionEnabled = true
       label.addGestureRecognizer(tap)
    }
    
    // Take user to thread on reddit in web browser
    func threadTitleGoToURL(_ sender: UITapGestureRecognizer) {
-      // Do stuff
-      let url = URL(string: thread!.url)
+      let url = URL(string: thread!.url + "?sort=top")
       let application = UIApplication.shared
       application.open(url!, options: [:], completionHandler: nil)
+   }
+   
+   // Extract keywords from thread explanation
+   func getKeyWords() {
+      print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
+      let postURLString : String = "http://www.thisismylink.com/postName.php"
+      
+      var request = URLRequest(url: URL(string: postURLString)!)
+      request.httpMethod = "POST"
+      let postString = "id=13&name=Jack"
+      request.httpBody = postString.data(using: .utf8)
+      let task = URLSession.shared.dataTask(with: request) { data, response, error in
+         // Check for fundamental networking error
+         guard let data = data, error == nil else {
+            print("error=\(String(describing: error))")
+            return
+         }
+         
+         // Check for HTTP errors
+         if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+            print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            print("response = \(String(describing: response))")
+         }
+         
+         let responseString = String(data: data, encoding: .utf8)
+         print("responseString = \(String(describing: responseString))")
+      }
+      task.resume()
    }
    
    override func viewDidLoad() {
