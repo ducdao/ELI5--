@@ -80,6 +80,8 @@ class ExplanationViewController: UIViewController {
             
             print("EXPLANATION: " + self.explanation!)
             
+            self.getKeyWords()
+            
             // Update UI on the main thread asynchronously
             DispatchQueue.main.async {
                self.updateUI()
@@ -114,13 +116,19 @@ class ExplanationViewController: UIViewController {
    // Extract keywords from thread explanation
    func getKeyWords() {
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
-      let postURLString : String = "http://www.thisismylink.com/postName.php"
+      let apiKey = "AIzaSyC1IUn3nbyuSj4f4LSSLVfKyqHWJryld4w"
+      let langURLString = "https://language.googleapis.com/v1/documents:analyzeEntities?key=" + apiKey
       
-      var request = URLRequest(url: URL(string: postURLString)!)
+      var request = URLRequest(url: URL(string: langURLString)!)
       request.httpMethod = "POST"
-      let postString = "id=13&name=Jack"
-      request.httpBody = postString.data(using: .utf8)
-      let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      
+      let requestBodyJSON = createDocumentJSON()
+      let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
+      
+      request.httpBody = jsonData
+      let task = URLSession.shared.dataTask(with: request) {
+         data, response, error in
          // Check for fundamental networking error
          guard let data = data, error == nil else {
             print("error=\(String(describing: error))")
@@ -133,10 +141,24 @@ class ExplanationViewController: UIViewController {
             print("response = \(String(describing: response))")
          }
          
-         let responseString = String(data: data, encoding: .utf8)
-         print("responseString = \(String(describing: responseString))")
+         let responseJSON = JSON(data)
+         
+         print("responseString = " + String(describing: responseJSON))
       }
+      
       task.resume()
+   }
+   
+   // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
+   func createDocumentJSON() -> [String:AnyObject] {
+      let contentJSON : [String:AnyObject] = ["content" : String(describing: explanation) as AnyObject, "type" : "PLAIN_TEXT" as AnyObject]
+      let documentJSON : [String:AnyObject] = ["document" : contentJSON as AnyObject]
+      
+      return documentJSON
+   }
+   
+   func parseResponseJSON(_ json : JSON) {
+      
    }
    
    override func viewDidLoad() {
