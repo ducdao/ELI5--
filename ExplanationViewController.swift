@@ -29,8 +29,9 @@ class ExplanationViewController: UIViewController {
          getURL()
          
          // Get JSON pertaining to the thread
-         getJSON(threadURL!) { jsonData in
+         getJSON("GET", threadURL!) { jsonData in
             self.getTopExplanation(jsonData)
+            self.getKeyWords()
          }
          
          addTapToWeb(threadTitleLabel)
@@ -60,11 +61,14 @@ class ExplanationViewController: UIViewController {
       }
    }
    
-   func getJSON(_ endpoint : String, completion: @escaping (JSON) -> Void) {
+   func getJSON(_ httpMethod : String, _ endpoint : String, completion: @escaping (JSON) -> Void) {
       var jsonData : JSON?
       
+      var request = URLRequest(url: URL(string: endpoint)!)
+      request.httpMethod = httpMethod
+      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      
       let session = URLSession(configuration: URLSessionConfiguration.default)
-      let request = URLRequest(url: URL(string: endpoint)!)
       let task: URLSessionDataTask = session.dataTask(with: request) {
          (receivedData, response, error) -> Void in
          if let data = receivedData {
@@ -80,6 +84,8 @@ class ExplanationViewController: UIViewController {
    // Function that gets JSON from some API
    func getTopExplanation(_ json : JSON) {
       let comments : JSON
+      
+      // Index of the comments of interest, index 0 contains metadata for thread
       let commentsIndex = 1
       var index = -1
       
@@ -96,14 +102,12 @@ class ExplanationViewController: UIViewController {
          index < self.maxComments
             
       print("EXPLANATION: " + self.fullExplanation!)
-            
-      getKeyWords()
    }
    
    // Update labels in the view
    func updateUI() {
       threadTitleLabel!.text = threadTitle
-      firstExplanationLabel!.text = fullExplanation
+      firstExplanationLabel!.text = firstExplanation
       secondExplanationLabel!.text = secondExplanation
    }
    
@@ -122,15 +126,19 @@ class ExplanationViewController: UIViewController {
       application.open(url!, options: [:], completionHandler: nil)
    }
    
+   // Get the string for the endpoint of analyzeSentiment method
+   func getAnalyzeSentimentStrng() -> String {
+      let apiMethod = "analyzeSentiment"
+      let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
+      
+      return "https://language.googleapis.com/v1/documents:" + apiMethod + "?key=" + apiKey
+   }
+   
    // Extract keywords from thread explanation
    func getKeyWords() {
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
-      let apiMethod = "analyzeSentiment"
-      let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
-      let langURLString = "https://language.googleapis.com/v1/documents:" +
-         apiMethod + "?key=" + apiKey
       
-      var request = URLRequest(url: URL(string: langURLString)!)
+      var request = URLRequest(url: URL(string: getAnalyzeSentimentStrng())!)
       request.httpMethod = "POST"
       request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
       
@@ -181,7 +189,7 @@ class ExplanationViewController: UIViewController {
       
       var request = URLRequest(url: URL(string: langURLString)!)
       request.httpMethod = "POST"
-      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      //request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
       
       let requestBodyJSON = createDocumentJSON(fullExplanation!)
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
