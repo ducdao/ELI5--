@@ -17,7 +17,6 @@
 		1CEBEC0C1F2320D000E9FB01 /* puppy.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */; };
 		1CF28A351F204143003A568F /* MainTVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A341F204143003A568F /* MainTVController.swift */; };
 		1CF28A371F2043D7003A568F /* ThreadTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF28A361F2043D7003A568F /* ThreadTVCell.swift */; };
-		1CF655D01F26DE0C005539A8 /* apiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CF655CF1F26DE0C005539A8 /* apiKeys.plist */; };
 		1CF84BB01F23FBB5004499B4 /* RedditThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF84BAF1F23FBB5004499B4 /* RedditThread.swift */; };
 		1CF84BB61F2429CB004499B4 /* ExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF84BB51F2429CB004499B4 /* ExplanationViewController.swift */; };
 		1CF84BB81F244BBF004499B4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF84BB71F244BBF004499B4 /* Color.swift */; };
@@ -57,7 +56,6 @@
 		1CEBEC0B1F2320D000E9FB01 /* puppy.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puppy.jpeg; sourceTree = "<group>"; };
 		1CF28A341F204143003A568F /* MainTVController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTVController.swift; path = ../MainTVController.swift; sourceTree = "<group>"; };
 		1CF28A361F2043D7003A568F /* ThreadTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTVCell.swift; sourceTree = "<group>"; };
-		1CF655CF1F26DE0C005539A8 /* apiKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = apiKeys.plist; sourceTree = "<group>"; };
 		1CF84BAF1F23FBB5004499B4 /* RedditThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditThread.swift; sourceTree = "<group>"; };
 		1CF84BB51F2429CB004499B4 /* ExplanationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExplanationViewController.swift; path = ../ExplanationViewController.swift; sourceTree = "<group>"; };
 		1CF84BB71F244BBF004499B4 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 		1CD044F81F17437300E43AA9 = {
 			isa = PBXGroup;
 			children = (
-				1CF655CF1F26DE0C005539A8 /* apiKeys.plist */,
 				1CD045031F17437400E43AA9 /* ELI5-- */,
 				1CD045181F17437600E43AA9 /* ELI5--Tests */,
 				1CD045231F17437600E43AA9 /* ELI5--UITests */,
@@ -254,7 +251,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CEBEC0C1F2320D000E9FB01 /* puppy.jpeg in Resources */,
-				1CF655D01F26DE0C005539A8 /* apiKeys.plist in Resources */,
 				1CD0450F1F17437500E43AA9 /* LaunchScreen.storyboard in Resources */,
 				1CD0450C1F17437500E43AA9 /* Assets.xcassets in Resources */,
 				1CD0450A1F17437400E43AA9 /* Main.storyboard in Resources */,
