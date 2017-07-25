@@ -29,7 +29,7 @@ class ExplanationViewController: UIViewController {
          getURL()
          
          // Get JSON pertaining to the thread
-         getJSON("GET", threadURL!) { jsonData in
+         getJSON("GET", Data(), threadURL!) { jsonData in
             self.getTopExplanation(jsonData)
             self.getKeyWords()
          }
@@ -61,17 +61,28 @@ class ExplanationViewController: UIViewController {
       }
    }
    
-   func getJSON(_ httpMethod : String, _ endpoint : String, completion: @escaping (JSON) -> Void) {
+   func getJSON(_ httpMethod : String, _ httpBody : Data, _ endpoint : String, completion: @escaping (JSON) -> Void) {
       var jsonData : JSON?
       
       var request = URLRequest(url: URL(string: endpoint)!)
-      request.httpMethod = httpMethod
       request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      request.httpMethod = httpMethod
+      
+      // Only populate body if it's a POST method
+      if (request.httpMethod == "POST") {
+         request.httpBody = httpBody
+      }
       
       let session = URLSession(configuration: URLSessionConfiguration.default)
       let task: URLSessionDataTask = session.dataTask(with: request) {
          (receivedData, response, error) -> Void in
          if let data = receivedData {
+            // Check for HTTP errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+               print("statusCode should be 200, but is \(httpStatus.statusCode)")
+               print("response = \(String(describing: response))")
+            }
+            
             jsonData = JSON(data)
             
             completion(jsonData!)
@@ -138,12 +149,15 @@ class ExplanationViewController: UIViewController {
    func getKeyWords() {
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
       
+      let requestBodyJSON = createDocumentJSON(fullExplanation!)
+      let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
+      
+      //getJSON("POST", jsonData, getAnalyzeSentimentStrng())
+      
+      
       var request = URLRequest(url: URL(string: getAnalyzeSentimentStrng())!)
       request.httpMethod = "POST"
       request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-      
-      let requestBodyJSON = createDocumentJSON(fullExplanation!)
-      let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
       request.httpBody = jsonData
       let task = URLSession.shared.dataTask(with: request) {
@@ -152,12 +166,6 @@ class ExplanationViewController: UIViewController {
          guard let data = data, error == nil else {
             print("error=\(String(describing: error))")
             return
-         }
-         
-         // Check for HTTP errors
-         if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-            print("statusCode should be 200, but is \(httpStatus.statusCode)")
-            print("response = \(String(describing: response))")
          }
          
          let responseJSON = JSON(data)
