@@ -18,7 +18,7 @@ class ExplanationViewController: UIViewController {
    
    var threadURL : String?
    var threadTitle : String?
-   var explanation : String?
+   var threadJSON : JSON?
    var thread : RedditThread? {
       // Property observer, execute when thread is set
       didSet {
@@ -27,8 +27,13 @@ class ExplanationViewController: UIViewController {
          
          getTitle()
          getURL()
-         getTopExplanation(threadURL!)
-         addTap(threadTitleLabel)
+         
+         // Get JSON pertaining to the thread
+         getJSON(threadURL!) { jsonData in
+            self.getTopExplanation(jsonData)
+         }
+         
+         addTapToWeb(threadTitleLabel)
       }
    }
    
@@ -55,54 +60,55 @@ class ExplanationViewController: UIViewController {
       }
    }
    
-   // Function that gets JSON from some API
-   func getTopExplanation(_ apiString : String) {
+   func getJSON(_ endpoint : String, completion: @escaping (JSON) -> Void) {
       var jsonData : JSON?
       
       let session = URLSession(configuration: URLSessionConfiguration.default)
-      let request = URLRequest(url: URL(string: apiString)!)
+      let request = URLRequest(url: URL(string: endpoint)!)
       let task: URLSessionDataTask = session.dataTask(with: request) {
          (receivedData, response, error) -> Void in
          if let data = receivedData {
-            // Index of array where all comments live. Index 0 = thread metadata
-            let commentsIndex = 1
-            var index = -1
-            
-            // No do-catch since no errors thrown
             jsonData = JSON(data)
             
-            // Go to beginning of the comments
-            jsonData = jsonData?[commentsIndex]["data"]["children"]
-            
-            print("Finding top explanation...")
-            // Find the top comment that's NOT a stickied post
-            repeat {
-               index = index + 1
-               
-               self.fullExplanation = jsonData?[index]["data"]["body"].string!
-            } while (jsonData?[index]["data"]["stickied"].bool! == true ||
-               jsonData?[index]["data"]["body"].string! == "[removed]") &&
-               index < self.maxComments
-            
-            print("EXPLANATION: " + self.fullExplanation!)
-            
-            self.getKeyWords()
-            self.getSearchTerms()
+            completion(jsonData!)
          }
       }
       
       task.resume()
    }
    
+   // Function that gets JSON from some API
+   func getTopExplanation(_ json : JSON) {
+      let comments : JSON
+      let commentsIndex = 1
+      var index = -1
+      
+      comments = json[commentsIndex]["data"]["children"]
+            
+      print("Finding top explanation...")
+      // Find the top comment that's NOT a stickied post
+      repeat {
+         index = index + 1
+         
+         self.fullExplanation = comments[index]["data"]["body"].string!
+      } while (comments[index]["data"]["stickied"].bool! == true ||
+         comments[index]["data"]["body"].string! == "[removed]") &&
+         index < self.maxComments
+            
+      print("EXPLANATION: " + self.fullExplanation!)
+            
+      getKeyWords()
+   }
+   
    // Update labels in the view
    func updateUI() {
       threadTitleLabel!.text = threadTitle
-      firstExplanationLabel!.text = firstExplanation
+      firstExplanationLabel!.text = fullExplanation
       secondExplanationLabel!.text = secondExplanation
    }
    
    // Add ability to tap to go to reddit thread on the web
-   func addTap(_ label : UILabel!) {
+   func addTapToWeb(_ label : UILabel!) {
       let tap = UITapGestureRecognizer(target: self,
          action: #selector(self.threadTitleGoToURL(_:)))
       label.isUserInteractionEnabled = true
@@ -155,6 +161,12 @@ class ExplanationViewController: UIViewController {
          
          // Set first and second explanation that will be displayed on explanation view
          self.parseAnalyzeSentimentJSON(responseJSON)
+         
+         DispatchQueue.main.async {
+            self.updateUI()
+         }
+         
+         //self.getSearchTerms()
       }
       
       task.resume()
