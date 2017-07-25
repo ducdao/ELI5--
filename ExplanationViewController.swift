@@ -10,7 +10,8 @@ import UIKit
 
 class ExplanationViewController: UIViewController {
    @IBOutlet weak var threadTitleLabel: UILabel!
-   @IBOutlet weak var explanationLabel: UILabel!
+   @IBOutlet weak var firstExplanationLabel: UILabel!
+   @IBOutlet weak var secondExplanationLabel: UILabel!
    
    // The number of comments we want returned in the JSON
    let maxComments : Int = 5
@@ -33,6 +34,10 @@ class ExplanationViewController: UIViewController {
    
    // Keywords taken from the explanation
    var keyWords = Set<String>()
+   
+   // 2 sentences extracted from the explanation
+   var firstExplanation : String?
+   var secondExplanation : String?
    
    // Set text for the thread title and explanation
    func getTitle() {
@@ -81,11 +86,6 @@ class ExplanationViewController: UIViewController {
             print("EXPLANATION: " + self.explanation!)
             
             self.getKeyWords()
-            
-            // Update UI on the main thread asynchronously
-            DispatchQueue.main.async {
-               self.updateUI()
-            }
          }
       }
       
@@ -95,7 +95,8 @@ class ExplanationViewController: UIViewController {
    // Update labels in the view
    func updateUI() {
       threadTitleLabel!.text = threadTitle
-      explanationLabel!.text = explanation
+      firstExplanationLabel!.text = firstExplanation
+      secondExplanationLabel!.text = secondExplanation
    }
    
    // Add ability to tap to go to reddit thread on the web
@@ -115,9 +116,10 @@ class ExplanationViewController: UIViewController {
    
    // Extract keywords from thread explanation
    func getKeyWords() {
+      
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
-      let apiMethod = "analyzeEntitySentiment"
-      let apiKey = "AIzaSyC1IUn3nbyuSj4f4LSSLVfKyqHWJryld4w"
+      let apiMethod = "analyzeSentiment"
+      let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
       let langURLString = "https://language.googleapis.com/v1/documents:" +
          apiMethod + "?key=" + apiKey
       
@@ -125,7 +127,7 @@ class ExplanationViewController: UIViewController {
       request.httpMethod = "POST"
       request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
       
-      let requestBodyJSON = createAnalyzeEntitiesJSON()
+      let requestBodyJSON = createDocumentJSON()
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
       request.httpBody = jsonData
@@ -149,14 +151,19 @@ class ExplanationViewController: UIViewController {
          
          self.explanation = self.explanation?.trimmingCharacters(in: .newlines)
          self.explanation = self.explanation?.replacingOccurrences(of: "&amp;", with: "&")
-         //self.parseAnalyzeEntitiesResponseJSON(responseJSON)
+         
+         // Set first and second explanation that will be displayed on explanation view
+         self.parseAnalyzeSentimentJSON(responseJSON)
+         
+         // Get keywords for image search
+         self.parseAnalyzeEntitiesResponseJSON(responseJSON)
       }
       
       task.resume()
    }
    
    // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
-   func createAnalyzeEntitiesJSON() -> [String:AnyObject] {
+   func createDocumentJSON() -> [String:AnyObject] {
       let contentJSON : [String:AnyObject] =
          ["content" : String(describing: explanation!) as AnyObject,
           "type" : "PLAIN_TEXT" as AnyObject]
@@ -164,6 +171,39 @@ class ExplanationViewController: UIViewController {
          ["document" : contentJSON as AnyObject]
       
       return documentJSON
+   }
+   
+   // Parse the JSON received from the POST to analyzeSentiment
+   func parseAnalyzeSentimentJSON(_ json : JSON) {
+      var max : Double = -1, min : Double = 1
+      
+      let sentences = json["sentences"]
+      
+      for index in 0..<sentences.count {
+         let answer = sentences[index]["text"]["content"].string!
+         let score = sentences[index]["sentiment"]["score"].double!
+         
+         print("ANSWER: " + answer)
+         print("SCORE: " + String(score))
+         
+         if max < score {
+            max = score
+            firstExplanation = answer
+         }
+         
+         if score < min {
+            min = score
+            secondExplanation = answer
+         }
+      }
+      
+      print("MAX ANSWER: " + firstExplanation!)
+      print("   MIN ANSWER: " + secondExplanation!)
+      
+      // Update UI on the main thread asynchronously
+      DispatchQueue.main.async {
+         self.updateUI()
+      }
    }
    
    // Parse the JSON received from the POST to analyzeEntities

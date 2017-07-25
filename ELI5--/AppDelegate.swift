@@ -12,22 +12,9 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    /* ADDITIONAL INFO FOR MILESTONE 3
-      
-      I was able to get most of the major information needed from Reddit. I still
-      need to get the explanation but this should be relevantly simple since I have
-      the url to all the thread's comments. 
- 
-      From there, I'll extract key words from it and pass them as parameters for
-      the endpoint for the Google Image Search. Running the image search should be
-      a similar process to the Reddit endpoint. Constructing the endpoint for the
-      image search is actually pretty tedious which is why I had to comment the fields
-      I needed. (Working full-time limited my time with this project on top of the lab 
-      + midterm. :( )
- 
-   */
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    var apiKey : String?
+   
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {      
         // Override point for customization after application launch.
         return true
     }

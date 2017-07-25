@@ -99,10 +99,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="explanationLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3H-W2-RWE">
-                                <rect key="frame" x="8" y="152" width="359" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="firstExplanationLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3H-W2-RWE">
+                                <rect key="frame" x="8" y="152" width="359" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="359" id="1bE-LX-6Tt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="secondExplanationLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X0t-N7-WSP">
+                                <rect key="frame" x="8" y="194" width="359" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="359" id="rLE-20-UmD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -111,17 +120,21 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="X0t-N7-WSP" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="3XD-Xi-lj3"/>
                             <constraint firstItem="tEE-zw-Gae" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-4" id="MwZ-OC-8Pn"/>
                             <constraint firstItem="tEE-zw-Gae" firstAttribute="top" secondItem="GAo-fK-veB" secondAttribute="bottom" constant="8" id="P8k-h7-Vqf"/>
                             <constraint firstItem="P3H-W2-RWE" firstAttribute="top" secondItem="tEE-zw-Gae" secondAttribute="bottom" constant="8" id="Vu9-1c-7OV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="P3H-W2-RWE" secondAttribute="trailing" constant="-8" id="efu-Qs-F4a"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tEE-zw-Gae" secondAttribute="trailing" constant="-4" id="mCL-1j-Ky0"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="X0t-N7-WSP" secondAttribute="trailing" constant="-8" id="nZV-K8-vvI"/>
+                            <constraint firstItem="X0t-N7-WSP" firstAttribute="top" secondItem="P3H-W2-RWE" secondAttribute="bottom" constant="21" id="qjf-Fw-qTg"/>
                             <constraint firstItem="P3H-W2-RWE" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="ybC-Kn-he1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Explanation" id="6bG-l1-Ixc"/>
                     <connections>
-                        <outlet property="explanationLabel" destination="P3H-W2-RWE" id="sg0-3B-wth"/>
+                        <outlet property="firstExplanationLabel" destination="P3H-W2-RWE" id="fWQ-P8-u7O"/>
+                        <outlet property="secondExplanationLabel" destination="X0t-N7-WSP" id="7K4-eo-Mr0"/>
                         <outlet property="threadTitleLabel" destination="tEE-zw-Gae" id="ZWU-qd-Dzo"/>
                     </connections>
                 </viewController>
