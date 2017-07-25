@@ -116,14 +116,16 @@ class ExplanationViewController: UIViewController {
    // Extract keywords from thread explanation
    func getKeyWords() {
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
+      let apiMethod = "analyzeEntitySentiment"
       let apiKey = "AIzaSyC1IUn3nbyuSj4f4LSSLVfKyqHWJryld4w"
-      let langURLString = "https://language.googleapis.com/v1/documents:analyzeEntities?key=" + apiKey
+      let langURLString = "https://language.googleapis.com/v1/documents:" +
+         apiMethod + "?key=" + apiKey
       
       var request = URLRequest(url: URL(string: langURLString)!)
       request.httpMethod = "POST"
       request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
       
-      let requestBodyJSON = createDocumentJSON()
+      let requestBodyJSON = createAnalyzeEntitiesJSON()
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
       request.httpBody = jsonData
@@ -145,16 +147,18 @@ class ExplanationViewController: UIViewController {
          
          print("responseString = " + String(describing: responseJSON))
          
-         self.parseResponseJSON(responseJSON)
+         self.explanation = self.explanation?.trimmingCharacters(in: .newlines)
+         self.explanation = self.explanation?.replacingOccurrences(of: "&amp;", with: "&")
+         //self.parseAnalyzeEntitiesResponseJSON(responseJSON)
       }
       
       task.resume()
    }
    
    // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
-   func createDocumentJSON() -> [String:AnyObject] {
+   func createAnalyzeEntitiesJSON() -> [String:AnyObject] {
       let contentJSON : [String:AnyObject] =
-         ["content" : String(describing: explanation!.trimmingCharacters(in: .newlines)) as AnyObject,
+         ["content" : String(describing: explanation!) as AnyObject,
           "type" : "PLAIN_TEXT" as AnyObject]
       let documentJSON : [String:AnyObject] =
          ["document" : contentJSON as AnyObject]
@@ -163,15 +167,16 @@ class ExplanationViewController: UIViewController {
    }
    
    // Parse the JSON received from the POST to analyzeEntities
-   func parseResponseJSON(_ json : JSON) {
+   func parseAnalyzeEntitiesResponseJSON(_ json : JSON) {
       let entities = json["entities"]
 
       for index in 0..<entities.count {
          let word = entities[index]["mentions"][0]["text"]["content"].string!
-         let type = entities[index]["mentions"][0]["type"].string!
+         let mentionType = entities[index]["mentions"][0]["type"].string!
+         let type = entities[index]["type"].string!
          
-         if type == "PROPER" || type == "COMMON" {
-            print(word + " " + type)
+         if mentionType == "PROPER" || mentionType == "COMMON" && type != "OTHER" {
+            print(word + " " + mentionType)
             
             keyWords.insert(word)
          }
