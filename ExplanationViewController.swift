@@ -35,9 +35,10 @@ class ExplanationViewController: UIViewController {
    // Keywords taken from the explanation
    var keyWords = Set<String>()
    
-   // 2 sentences extracted from the explanation
+   // 2 sentences extracted from the full explanation
    var firstExplanation : String?
    var secondExplanation : String?
+   var fullExplanation : String?
    
    // Set text for the thread title and explanation
    func getTitle() {
@@ -78,14 +79,15 @@ class ExplanationViewController: UIViewController {
             repeat {
                index = index + 1
                
-               self.explanation = jsonData?[index]["data"]["body"].string!
+               self.fullExplanation = jsonData?[index]["data"]["body"].string!
             } while (jsonData?[index]["data"]["stickied"].bool! == true ||
                jsonData?[index]["data"]["body"].string! == "[removed]") &&
                index < self.maxComments
             
-            print("EXPLANATION: " + self.explanation!)
+            print("EXPLANATION: " + self.fullExplanation!)
             
             self.getKeyWords()
+            self.getSearchTerms()
          }
       }
       
@@ -116,7 +118,6 @@ class ExplanationViewController: UIViewController {
    
    // Extract keywords from thread explanation
    func getKeyWords() {
-      
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
       let apiMethod = "analyzeSentiment"
       let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
@@ -127,7 +128,7 @@ class ExplanationViewController: UIViewController {
       request.httpMethod = "POST"
       request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
       
-      let requestBodyJSON = createDocumentJSON()
+      let requestBodyJSON = createDocumentJSON(fullExplanation!)
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
       request.httpBody = jsonData
@@ -149,11 +150,51 @@ class ExplanationViewController: UIViewController {
          
          print("responseString = " + String(describing: responseJSON))
          
-         self.explanation = self.explanation?.trimmingCharacters(in: .newlines)
-         self.explanation = self.explanation?.replacingOccurrences(of: "&amp;", with: "&")
+         self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines)
+         self.fullExplanation = self.fullExplanation?.replacingOccurrences(of: "&amp;", with: "&")
          
          // Set first and second explanation that will be displayed on explanation view
          self.parseAnalyzeSentimentJSON(responseJSON)
+      }
+      
+      task.resume()
+   }
+   
+   func getSearchTerms() {
+      print("EXTRACTING SEARCH TERMS IMAGE SEARCH...")
+      let apiMethod = "analyzeEntities"
+      let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
+      let langURLString = "https://language.googleapis.com/v1/documents:" +
+         apiMethod + "?key=" + apiKey
+      
+      var request = URLRequest(url: URL(string: langURLString)!)
+      request.httpMethod = "POST"
+      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      
+      let requestBodyJSON = createDocumentJSON(fullExplanation!)
+      let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
+      
+      request.httpBody = jsonData
+      let task = URLSession.shared.dataTask(with: request) {
+         data, response, error in
+         // Check for fundamental networking error
+         guard let data = data, error == nil else {
+            print("error=\(String(describing: error))")
+            return
+         }
+         
+         // Check for HTTP errors
+         if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+            print("statusCode should be 200, but is \(httpStatus.statusCode)")
+            print("response = \(String(describing: response))")
+         }
+         
+         let responseJSON = JSON(data)
+         
+         print("responseString = " + String(describing: responseJSON))
+         
+         self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines)
+         self.fullExplanation = self.fullExplanation?.replacingOccurrences(of: "&amp;", with: "&")
          
          // Get keywords for image search
          self.parseAnalyzeEntitiesResponseJSON(responseJSON)
@@ -163,9 +204,9 @@ class ExplanationViewController: UIViewController {
    }
    
    // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
-   func createDocumentJSON() -> [String:AnyObject] {
+   func createDocumentJSON(_ content : String) -> [String:AnyObject] {
       let contentJSON : [String:AnyObject] =
-         ["content" : String(describing: explanation!) as AnyObject,
+         ["content" : String(describing: content) as AnyObject,
           "type" : "PLAIN_TEXT" as AnyObject]
       let documentJSON : [String:AnyObject] =
          ["document" : contentJSON as AnyObject]
@@ -179,6 +220,7 @@ class ExplanationViewController: UIViewController {
       
       let sentences = json["sentences"]
       
+      // Find the top 2 sentences in the explanations
       for index in 0..<sentences.count {
          let answer = sentences[index]["text"]["content"].string!
          let score = sentences[index]["sentiment"]["score"].double!

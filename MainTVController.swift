@@ -67,9 +67,6 @@ class MainTVController: UITableViewController {
       
       // Get JSON from explainlikeimfive subrediit
       getJSON(GETeli5)
-      
-      // Google image search
-      //getJSON(GETImgSearch)
    }
    
    // Function that gets JSON from some API
