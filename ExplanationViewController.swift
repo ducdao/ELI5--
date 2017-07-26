@@ -13,10 +13,14 @@ class ExplanationViewController: UIViewController {
    @IBOutlet weak var firstExplanationLabel: UILabel!
    @IBOutlet weak var secondExplanationLabel: UILabel!
    
+   @IBOutlet weak var firstImage: UIImageView!
+   @IBOutlet weak var secondImage: UIImageView!
+   @IBOutlet weak var thirdImage: UIImageView!
+   
    @IBOutlet weak var scrollView: UIScrollView!
    
    // The number of comments we want returned in the JSON
-   let maxComments : Int = 5
+   let maxComments : Int = 4
    
    // 2 sentences extracted from the full explanation
    var firstExplanation : String?
@@ -40,7 +44,6 @@ class ExplanationViewController: UIViewController {
             self.getTopExplanation(jsonData)
             self.getKeyExplanations()
             self.getSearchTerms()
-            self.getImageLink("dog")
          }
          
          addTapToWeb(threadTitleLabel)
@@ -48,7 +51,7 @@ class ExplanationViewController: UIViewController {
    }
    
    // Keywords taken from the explanation
-   var keyWords = Set<String>()
+   var keyWords = [String]()
    
    // Set text for the thread title and explanation
    func getTitle() {
@@ -159,7 +162,6 @@ class ExplanationViewController: UIViewController {
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
       getJSON("POST", jsonData!, getLangHTTPMethodString("analyzeSentiment")) { responseJSON in
-         
          // Remove newlines and replace &amp; with &
          self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
          
@@ -181,7 +183,8 @@ class ExplanationViewController: UIViewController {
       }
    }
    
-   // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
+   // Create a new documents JSON specified by Google here: 
+   // https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
    func createDocumentJSON(_ content : String) -> [String:AnyObject] {
       let contentJSON : [String:AnyObject] =
          ["content" : String(describing: content) as AnyObject,
@@ -220,7 +223,7 @@ class ExplanationViewController: UIViewController {
       print("MAX ANSWER: " + firstExplanation!)
       print("   MIN ANSWER: " + secondExplanation!)
       
-      // Update UI on the main thread asynchronously
+      // Have all text values for text elements, update all text UI on main thread
       DispatchQueue.main.async {
          self.updateUI()
          /*self.scrollView.addSubview(self.threadTitleLabel)
@@ -233,6 +236,7 @@ class ExplanationViewController: UIViewController {
    
    // Parse the JSON received from the POST to analyzeEntities
    func parseAnalyzeEntitiesResponseJSON(_ json : JSON) {
+      var keyWordsSet = Set<String>()
       let entities = json["entities"]
       
       // Get all proper nouns
@@ -246,12 +250,24 @@ class ExplanationViewController: UIViewController {
             
             // Add words if it's not a link
             if canOpenAsURL(word) == false {
-               keyWords.insert(word)
+               keyWordsSet.insert(word)
             }
          }
       }
       
-      print(keyWords)
+      self.keyWords = Array(keyWordsSet)
+      print("\nPRINTING KEYWORDS..." + String(describing: keyWordsSet))
+      
+      print("COUNT: " + String(describing: keyWords))
+      
+      // Set 3 images in explanation view relating to thread
+      self.getImageLink(self.keyWords[getRand(keyWords.count)], self.firstImage)
+      self.getImageLink(self.keyWords[getRand(keyWords.count)], self.secondImage)
+      self.getImageLink(self.keyWords[getRand(keyWords.count)], self.thirdImage)
+   }
+   
+   func getRand(_ seed : Int) -> Int {
+      return Int(arc4random_uniform((UInt32(seed))))
    }
    
    func canOpenAsURL(_ urlString: String?) -> Bool {
@@ -264,18 +280,42 @@ class ExplanationViewController: UIViewController {
       return false
    }
    
-   func getImageLink(_ searchTerm : String) {
-      let endpoint : String = "https://www.googleapis.com/customsearch/v1?q=" + searchTerm +
-         "&cx=000826048872980895053%3A0ntfgkywxg8&num=3&safe=high&searchType=" +
-      "image&siteSearch=images.google.com&key=AIzaSyCCQtZQUSw85jaY-BN1_tFnZOnZf2P-dpw"
+   // Do an image search on Google
+   func getImageLink(_ searchTerm : String, _ imageView : UIImageView) {
+      var searchTerm = searchTerm.trimmingCharacters(in: .whitespaces)
+      searchTerm = searchTerm.replacingOccurrences(of: " ", with: "+")
+      
+      let endpoint : String = "https://www.googleapis.com/customsearch/v1?q=" + searchTerm + "&imgSize=medium&imgType=photo" +
+         "&cx=000826048872980895053%3A0ntfgkywxg8&num=5&safe=high&searchType=" +
+         "image&siteSearch=google.com/&key=AIzaSyCCQtZQUSw85jaY-BN1_tFnZOnZf2P-dpw"
       
       getJSON("GET", Data(), endpoint) { responseJSON in
          print(responseJSON)
          
          let itemsJSON : JSON = responseJSON["items"]
          
-         print("LINK: " + String(describing: itemsJSON[0]["link"]))
+         print("LINK: " + String(describing: itemsJSON[self.getRand(itemsJSON.count)]["link"]))
+         
+         self.setImageView(String(describing: itemsJSON[self.getRand(itemsJSON.count)]["link"]), imageView)
       }
+   }
+   
+   func setImageView(_ link : String, _ imageView : UIImageView) {
+      //let link = link.replacingOccurrences(of: "http:", with: "https:")
+      
+      let request = URLRequest(url: URL(string: link)!)
+      let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+         if error != nil {
+            print(error!)
+            return
+         }
+         
+         DispatchQueue.main.async {
+            imageView.image = UIImage(data: data!)
+         }
+      }
+      
+      task.resume()
    }
    
    override func viewDidLoad() {
@@ -283,18 +323,5 @@ class ExplanationViewController: UIViewController {
       
       scrollView = UIScrollView(frame: view.bounds)
       //scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
-   }
-   
-   func getImage(_ link : String) {
-   /*   let task = URLSession.shared.dataTask(with: self.player.imageURL!) { (data, response, error) in
-         if error != nil {
-            print(error!)
-            return
-         }
-      
-         self.profileImage.image = UIImage(data: data!)
-      }
-   
-      task.resume()*/
    }
 }

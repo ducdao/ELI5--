@@ -40,22 +40,10 @@ extension UIColor {
 }
 
 class MainTVController: UITableViewController {
-
-   // Google Custom Search API information
-   // cx: 000826048872980895053:0ntfgkywxg8=12xaw1
-   // searchType: image
-   // q : query term
-   // API key: AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ=dcazx
-   // Example endpoint hit: https://www.googleapis.com/customsearch/v1?key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&cx=000826048872980895053:0ntfgkywxg8&q=starcraft2&safe=high&searchType=image
-   
    var threadList = [RedditThread]()
    
    // Endpoints from Reddit, Google Custom Search
    let GETeli5 : String = "https://www.reddit.com/r/explainlikeimfive/top/.json?sort=top&t=week"
-   let GETImgSearch : String = "https://www.googleapis.com/customsearch/v1?" +
-   "key=AIzaSyDpFuKuy-dt8ON1GUzvX7EXWOUTQk_8DDQ&" +
-   "cx=000826048872980895053:0ntfgkywxg8&" +
-   "q=starcraft2&safe=high&searchType=image"
    
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -63,14 +51,16 @@ class MainTVController: UITableViewController {
       // TODO: Fix pull to refresh code
 
       refreshControl = UIRefreshControl()
-      refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+      refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh threads...")
       refreshControl?.addTarget(self, action: #selector(refreshTV), for: UIControlEvents.valueChanged)
 
       tableView.addSubview(refreshControl!)
       tableView.refreshControl = refreshControl
       
       // Get JSON from explainlikeimfive subrediit
-      getJSON(GETeli5)
+      DispatchQueue.global(qos: .background).async {
+         self.getJSON(self.GETeli5)
+      }
    }
    
    // Function that gets JSON from some API
@@ -194,8 +184,8 @@ class MainTVController: UITableViewController {
       // Pass the selected object to the new view controller.
       if segue.identifier == "showExplanation" {
          if let indexPath = self.tableView.indexPathForSelectedRow {
-            let thread = threadList[(indexPath as NSIndexPath).row]
-         (segue.destination as! ExplanationViewController).thread = thread
+            let thread = self.threadList[(indexPath as NSIndexPath).row]
+            (segue.destination as! ExplanationViewController).thread = thread
          }
       }
    }

@@ -120,21 +120,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="vbN-Fh-XnZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vbN-Fh-XnZ">
                                 <rect key="frame" x="67.5" y="223" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="0UD-Rc-0Tw"/>
                                     <constraint firstAttribute="width" constant="240" id="fgF-ht-peF"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="e27-jd-1Pu">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e27-jd-1Pu">
                                 <rect key="frame" x="67" y="382" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="Bec-aS-eoP"/>
                                     <constraint firstAttribute="width" constant="240" id="xs9-9k-pC3"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="eHb-CE-lYg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eHb-CE-lYg">
                                 <rect key="frame" x="67" y="539" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="h4M-Lj-stn"/>
@@ -167,8 +167,11 @@
                     <navigationItem key="navigationItem" title="Explanation" id="6bG-l1-Ixc"/>
                     <connections>
                         <outlet property="firstExplanationLabel" destination="P3H-W2-RWE" id="fWQ-P8-u7O"/>
+                        <outlet property="firstImage" destination="vbN-Fh-XnZ" id="rsr-63-K2i"/>
                         <outlet property="scrollView" destination="AhV-CP-YxF" id="xk7-OR-Q0o"/>
                         <outlet property="secondExplanationLabel" destination="X0t-N7-WSP" id="7K4-eo-Mr0"/>
+                        <outlet property="secondImage" destination="e27-jd-1Pu" id="cBS-R6-FS9"/>
+                        <outlet property="thirdImage" destination="eHb-CE-lYg" id="GON-iT-FYN"/>
                         <outlet property="threadTitleLabel" destination="tEE-zw-Gae" id="ZWU-qd-Dzo"/>
                     </connections>
                 </viewController>
@@ -193,7 +196,4 @@
             <point key="canvasLocation" x="-1380" y="-115"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="puppy.jpeg" width="1600" height="1200"/>
-    </resources>
 </document>
