@@ -16,13 +16,18 @@ class ExplanationViewController: UIViewController {
    // The number of comments we want returned in the JSON
    let maxComments : Int = 5
    
+   // 2 sentences extracted from the full explanation
+   var firstExplanation : String?
+   var secondExplanation : String?
+   var fullExplanation : String?
+   
    var threadURL : String?
    var threadTitle : String?
    var threadJSON : JSON?
    var thread : RedditThread? {
       // Property observer, execute when thread is set
       didSet {
-         // Color the background of the
+         // Color the background of the cell
          colorObject((thread?.category)!, &self.view.backgroundColor!)
          
          getTitle()
@@ -31,7 +36,8 @@ class ExplanationViewController: UIViewController {
          // Get JSON pertaining to the thread
          getJSON("GET", Data(), threadURL!) { jsonData in
             self.getTopExplanation(jsonData)
-            self.getKeyWords()
+            self.getKeyExplanations()
+            self.getSearchTerms()
          }
          
          addTapToWeb(threadTitleLabel)
@@ -40,11 +46,6 @@ class ExplanationViewController: UIViewController {
    
    // Keywords taken from the explanation
    var keyWords = Set<String>()
-   
-   // 2 sentences extracted from the full explanation
-   var firstExplanation : String?
-   var secondExplanation : String?
-   var fullExplanation : String?
    
    // Set text for the thread title and explanation
    func getTitle() {
@@ -137,98 +138,41 @@ class ExplanationViewController: UIViewController {
       application.open(url!, options: [:], completionHandler: nil)
    }
    
-   // Get the string for the endpoint of analyzeSentiment method
-   func getAnalyzeSentimentStrng() -> String {
-      let apiMethod = "analyzeSentiment"
+   // Get the string for some endpoint
+   func getHTTPMethodString(_ apiMethod : String) -> String {
       let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
       
       return "https://language.googleapis.com/v1/documents:" + apiMethod + "?key=" + apiKey
    }
    
    // Extract keywords from thread explanation
-   func getKeyWords() {
+   func getKeyExplanations() {
       print("EXTRACTING KEYWORDS FROM THREAD EXPLANATION...")
       
       let requestBodyJSON = createDocumentJSON(fullExplanation!)
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
-      //getJSON("POST", jsonData, getAnalyzeSentimentStrng())
-      
-      
-      var request = URLRequest(url: URL(string: getAnalyzeSentimentStrng())!)
-      request.httpMethod = "POST"
-      request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-      
-      request.httpBody = jsonData
-      let task = URLSession.shared.dataTask(with: request) {
-         data, response, error in
-         // Check for fundamental networking error
-         guard let data = data, error == nil else {
-            print("error=\(String(describing: error))")
-            return
-         }
+      getJSON("POST", jsonData!, getHTTPMethodString("analyzeSentiment")) { responseJSON in
          
-         let responseJSON = JSON(data)
+      // Remove newlines and replace &amp; with &
+      self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
          
-         print("responseString = " + String(describing: responseJSON))
-         
-         self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines)
-         self.fullExplanation = self.fullExplanation?.replacingOccurrences(of: "&amp;", with: "&")
-         
-         // Set first and second explanation that will be displayed on explanation view
-         self.parseAnalyzeSentimentJSON(responseJSON)
-         
-         DispatchQueue.main.async {
-            self.updateUI()
-         }
-         
-         //self.getSearchTerms()
+      // Set first and second explanation that will be displayed on explanation view
+      self.parseAnalyzeSentimentJSON(responseJSON)
       }
-      
-      task.resume()
    }
    
+   // Extract key words from the first/secondExplanation and get 3 search terms
    func getSearchTerms() {
-      print("EXTRACTING SEARCH TERMS IMAGE SEARCH...")
-      let apiMethod = "analyzeEntities"
-      let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
-      let langURLString = "https://language.googleapis.com/v1/documents:" +
-         apiMethod + "?key=" + apiKey
-      
-      var request = URLRequest(url: URL(string: langURLString)!)
-      request.httpMethod = "POST"
-      //request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+      print("\nEXTRACTING 3 KEY TERMS FOR IMAGE SEARCH...")
       
       let requestBodyJSON = createDocumentJSON(fullExplanation!)
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
-      request.httpBody = jsonData
-      let task = URLSession.shared.dataTask(with: request) {
-         data, response, error in
-         // Check for fundamental networking error
-         guard let data = data, error == nil else {
-            print("error=\(String(describing: error))")
-            return
-         }
-         
-         // Check for HTTP errors
-         if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-            print("statusCode should be 200, but is \(httpStatus.statusCode)")
-            print("response = \(String(describing: response))")
-         }
-         
-         let responseJSON = JSON(data)
-         
-         print("responseString = " + String(describing: responseJSON))
-         
-         self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines)
-         self.fullExplanation = self.fullExplanation?.replacingOccurrences(of: "&amp;", with: "&")
-         
-         // Get keywords for image search
+      getJSON("POST", jsonData!, getHTTPMethodString("analyzeEntities")) { responseJSON in
+         print(responseJSON)
          self.parseAnalyzeEntitiesResponseJSON(responseJSON)
       }
-      
-      task.resume()
    }
    
    // Create a new documents JSON specified by Google here: https://cloud.google.com/natural-language/docs/reference/rest/v1beta2/documents#Document
