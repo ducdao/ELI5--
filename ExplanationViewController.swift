@@ -13,6 +13,8 @@ class ExplanationViewController: UIViewController {
    @IBOutlet weak var firstExplanationLabel: UILabel!
    @IBOutlet weak var secondExplanationLabel: UILabel!
    
+   @IBOutlet weak var scrollView: UIScrollView!
+   
    // The number of comments we want returned in the JSON
    let maxComments : Int = 5
    
@@ -38,7 +40,7 @@ class ExplanationViewController: UIViewController {
             self.getTopExplanation(jsonData)
             self.getKeyExplanations()
             self.getSearchTerms()
-            self.getImages("dog")
+            self.getImageLink("dog")
          }
          
          addTapToWeb(threadTitleLabel)
@@ -120,7 +122,7 @@ class ExplanationViewController: UIViewController {
    // Update labels in the view
    func updateUI() {
       // Remove newlines and replace &amp; with &
-      self.threadTitle = self.threadTitle?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
+      threadTitle = threadTitle?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
       
       threadTitleLabel!.text = threadTitle
       firstExplanationLabel!.text = firstExplanation
@@ -221,6 +223,11 @@ class ExplanationViewController: UIViewController {
       // Update UI on the main thread asynchronously
       DispatchQueue.main.async {
          self.updateUI()
+         /*self.scrollView.addSubview(self.threadTitleLabel)
+         self.scrollView.addSubview(self.firstExplanationLabel)
+         self.scrollView.addSubview(self.secondExplanationLabel)
+         
+         self.view.addSubview(self.scrollView)*/
       }
    }
    
@@ -257,7 +264,7 @@ class ExplanationViewController: UIViewController {
       return false
    }
    
-   func getImages(_ searchTerm : String) {
+   func getImageLink(_ searchTerm : String) {
       let endpoint : String = "https://www.googleapis.com/customsearch/v1?q=" + searchTerm +
          "&cx=000826048872980895053%3A0ntfgkywxg8&num=3&safe=high&searchType=" +
       "image&siteSearch=images.google.com&key=AIzaSyCCQtZQUSw85jaY-BN1_tFnZOnZf2P-dpw"
@@ -267,13 +274,27 @@ class ExplanationViewController: UIViewController {
          
          let itemsJSON : JSON = responseJSON["items"]
          
-         for index in 0..<itemsJSON.count {
-            print("LINK: " + String(describing: itemsJSON[index]["link"]))
-         }
+         print("LINK: " + String(describing: itemsJSON[0]["link"]))
       }
    }
    
    override func viewDidLoad() {
       super.viewDidLoad()
+      
+      scrollView = UIScrollView(frame: view.bounds)
+      //scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
+   }
+   
+   func getImage(_ link : String) {
+   /*   let task = URLSession.shared.dataTask(with: self.player.imageURL!) { (data, response, error) in
+         if error != nil {
+            print(error!)
+            return
+         }
+      
+         self.profileImage.image = UIImage(data: data!)
+      }
+   
+      task.resume()*/
    }
 }

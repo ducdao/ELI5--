@@ -61,9 +61,13 @@ class MainTVController: UITableViewController {
       super.viewDidLoad()
       
       // TODO: Fix pull to refresh code
+
       refreshControl = UIRefreshControl()
       refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
-      refreshControl?.addTarget(self, action: Selector(("refresh:")), for: UIControlEvents.valueChanged)
+      refreshControl?.addTarget(self, action: #selector(refreshTV), for: UIControlEvents.valueChanged)
+
+      tableView.addSubview(refreshControl!)
+      tableView.refreshControl = refreshControl
       
       // Get JSON from explainlikeimfive subrediit
       getJSON(GETeli5)
@@ -98,7 +102,7 @@ class MainTVController: UITableViewController {
       for (_, value):(String, JSON) in childrenJSON {
          var data : JSON = value["data"]
          
-         let title = data["title"].string!
+         let title = (data["title"].string!).replacingOccurrences(of: "&amp;", with: "&")
          let category : String = data["link_flair_text"].string ?? "Other"
          let createdInEpoch = data["created"].double!
          let url = data["url"].string!
@@ -129,8 +133,13 @@ class MainTVController: UITableViewController {
       return format.string(from: Date(timeIntervalSince1970: time))
    }
    
-   func refresh(sender:AnyObject) {
-      getJSON(GETeli5)
+   func refreshTV(sender:AnyObject) {
+      DispatchQueue.main.async {
+         self.threadList.removeAll()
+         self.tableView.reloadData()
+      }
+      
+      self.getJSON(self.GETeli5)
    }
 
    // ==========================================================================

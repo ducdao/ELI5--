@@ -89,6 +89,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AhV-CP-YxF">
+                                <rect key="frame" x="0.0" y="64" width="375" height="667"/>
+                            </scrollView>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="threadTitleLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEE-zw-Gae">
                                 <rect key="frame" x="12" y="72" width="351" height="72"/>
                                 <constraints>
@@ -117,30 +120,61 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="vbN-Fh-XnZ">
+                                <rect key="frame" x="67.5" y="223" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="0UD-Rc-0Tw"/>
+                                    <constraint firstAttribute="width" constant="240" id="fgF-ht-peF"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="e27-jd-1Pu">
+                                <rect key="frame" x="67" y="382" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="Bec-aS-eoP"/>
+                                    <constraint firstAttribute="width" constant="240" id="xs9-9k-pC3"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="puppy.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="eHb-CE-lYg">
+                                <rect key="frame" x="67" y="539" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="h4M-Lj-stn"/>
+                                    <constraint firstAttribute="height" constant="128" id="jAb-S2-KrH"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="X0t-N7-WSP" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="3XD-Xi-lj3"/>
+                            <constraint firstItem="AhV-CP-YxF" firstAttribute="top" secondItem="GAo-fK-veB" secondAttribute="bottom" id="47B-5Q-U2j"/>
+                            <constraint firstItem="vbN-Fh-XnZ" firstAttribute="top" secondItem="X0t-N7-WSP" secondAttribute="bottom" constant="8" id="4Yf-El-fgZ"/>
                             <constraint firstItem="tEE-zw-Gae" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-4" id="MwZ-OC-8Pn"/>
+                            <constraint firstItem="e27-jd-1Pu" firstAttribute="top" secondItem="vbN-Fh-XnZ" secondAttribute="bottom" constant="31" id="OrI-ka-Nzx"/>
                             <constraint firstItem="tEE-zw-Gae" firstAttribute="top" secondItem="GAo-fK-veB" secondAttribute="bottom" constant="8" id="P8k-h7-Vqf"/>
+                            <constraint firstItem="vbN-Fh-XnZ" firstAttribute="centerX" secondItem="FjD-zg-mZ9" secondAttribute="centerX" id="QJo-5t-hFh"/>
                             <constraint firstItem="P3H-W2-RWE" firstAttribute="top" secondItem="tEE-zw-Gae" secondAttribute="bottom" constant="8" id="Vu9-1c-7OV"/>
+                            <constraint firstItem="eHb-CE-lYg" firstAttribute="centerX" secondItem="FjD-zg-mZ9" secondAttribute="centerX" id="dzW-SM-8iw"/>
                             <constraint firstAttribute="trailingMargin" secondItem="P3H-W2-RWE" secondAttribute="trailing" constant="-8" id="efu-Qs-F4a"/>
+                            <constraint firstItem="eHb-CE-lYg" firstAttribute="top" secondItem="e27-jd-1Pu" secondAttribute="bottom" constant="29" id="fQe-Ap-4er"/>
+                            <constraint firstItem="AhV-CP-YxF" firstAttribute="height" secondItem="FjD-zg-mZ9" secondAttribute="height" id="gpt-WF-H9L"/>
+                            <constraint firstItem="e27-jd-1Pu" firstAttribute="centerX" secondItem="FjD-zg-mZ9" secondAttribute="centerX" id="jqw-A2-QbD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tEE-zw-Gae" secondAttribute="trailing" constant="-4" id="mCL-1j-Ky0"/>
                             <constraint firstAttribute="trailingMargin" secondItem="X0t-N7-WSP" secondAttribute="trailing" constant="-8" id="nZV-K8-vvI"/>
                             <constraint firstItem="X0t-N7-WSP" firstAttribute="top" secondItem="P3H-W2-RWE" secondAttribute="bottom" constant="21" id="qjf-Fw-qTg"/>
                             <constraint firstItem="P3H-W2-RWE" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="ybC-Kn-he1"/>
+                            <constraint firstItem="AhV-CP-YxF" firstAttribute="width" secondItem="FjD-zg-mZ9" secondAttribute="width" id="zpU-SY-brv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Explanation" id="6bG-l1-Ixc"/>
                     <connections>
                         <outlet property="firstExplanationLabel" destination="P3H-W2-RWE" id="fWQ-P8-u7O"/>
+                        <outlet property="scrollView" destination="AhV-CP-YxF" id="xk7-OR-Q0o"/>
                         <outlet property="secondExplanationLabel" destination="X0t-N7-WSP" id="7K4-eo-Mr0"/>
                         <outlet property="threadTitleLabel" destination="tEE-zw-Gae" id="ZWU-qd-Dzo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9k0-ED-trd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="520.5" y="-116.5"/>
+            <point key="canvasLocation" x="519.20000000000005" y="-117.39130434782609"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tWZ-MA-VNA">
@@ -159,4 +193,7 @@
             <point key="canvasLocation" x="-1380" y="-115"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="puppy.jpeg" width="1600" height="1200"/>
+    </resources>
 </document>
