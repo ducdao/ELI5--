@@ -38,6 +38,7 @@ class ExplanationViewController: UIViewController {
             self.getTopExplanation(jsonData)
             self.getKeyExplanations()
             self.getSearchTerms()
+            self.getImages("dog")
          }
          
          addTapToWeb(threadTitleLabel)
@@ -118,6 +119,9 @@ class ExplanationViewController: UIViewController {
    
    // Update labels in the view
    func updateUI() {
+      // Remove newlines and replace &amp; with &
+      self.threadTitle = self.threadTitle?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
+      
       threadTitleLabel!.text = threadTitle
       firstExplanationLabel!.text = firstExplanation
       secondExplanationLabel!.text = secondExplanation
@@ -139,8 +143,8 @@ class ExplanationViewController: UIViewController {
    }
    
    // Get the string for some endpoint
-   func getHTTPMethodString(_ apiMethod : String) -> String {
-      let apiKey = "AIzaSyBVsj-vlGYJsPfmYM_NqMwBgsv4jUoSmQw"
+   func getLangHTTPMethodString(_ apiMethod : String) -> String {
+      let apiKey = "AIzaSyCCQtZQUSw85jaY-BN1_tFnZOnZf2P-dpw"
       
       return "https://language.googleapis.com/v1/documents:" + apiMethod + "?key=" + apiKey
    }
@@ -152,13 +156,13 @@ class ExplanationViewController: UIViewController {
       let requestBodyJSON = createDocumentJSON(fullExplanation!)
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
-      getJSON("POST", jsonData!, getHTTPMethodString("analyzeSentiment")) { responseJSON in
+      getJSON("POST", jsonData!, getLangHTTPMethodString("analyzeSentiment")) { responseJSON in
          
-      // Remove newlines and replace &amp; with &
-      self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
+         // Remove newlines and replace &amp; with &
+         self.fullExplanation = self.fullExplanation?.trimmingCharacters(in: .newlines).replacingOccurrences(of: "&amp;", with: "&")
          
-      // Set first and second explanation that will be displayed on explanation view
-      self.parseAnalyzeSentimentJSON(responseJSON)
+         // Set first and second explanation that will be displayed on explanation view
+         self.parseAnalyzeSentimentJSON(responseJSON)
       }
    }
    
@@ -169,7 +173,7 @@ class ExplanationViewController: UIViewController {
       let requestBodyJSON = createDocumentJSON(fullExplanation!)
       let jsonData = try? JSONSerialization.data(withJSONObject: requestBodyJSON, options: .prettyPrinted)
       
-      getJSON("POST", jsonData!, getHTTPMethodString("analyzeEntities")) { responseJSON in
+      getJSON("POST", jsonData!, getLangHTTPMethodString("analyzeEntities")) { responseJSON in
          print(responseJSON)
          self.parseAnalyzeEntitiesResponseJSON(responseJSON)
       }
@@ -223,7 +227,8 @@ class ExplanationViewController: UIViewController {
    // Parse the JSON received from the POST to analyzeEntities
    func parseAnalyzeEntitiesResponseJSON(_ json : JSON) {
       let entities = json["entities"]
-
+      
+      // Get all proper nouns
       for index in 0..<entities.count {
          let word = entities[index]["mentions"][0]["text"]["content"].string!
          let mentionType = entities[index]["mentions"][0]["type"].string!
@@ -232,11 +237,40 @@ class ExplanationViewController: UIViewController {
          if mentionType == "PROPER" || mentionType == "COMMON" && type != "OTHER" {
             print(word + " " + mentionType)
             
-            keyWords.insert(word)
+            // Add words if it's not a link
+            if canOpenAsURL(word) == false {
+               keyWords.insert(word)
+            }
          }
       }
       
       print(keyWords)
+   }
+   
+   func canOpenAsURL(_ urlString: String?) -> Bool {
+      if let urlString = urlString {
+         if let url = URL(string: urlString) {
+            return UIApplication.shared.canOpenURL(url)
+         }
+      }
+      
+      return false
+   }
+   
+   func getImages(_ searchTerm : String) {
+      let endpoint : String = "https://www.googleapis.com/customsearch/v1?q=" + searchTerm +
+         "&cx=000826048872980895053%3A0ntfgkywxg8&num=3&safe=high&searchType=" +
+      "image&siteSearch=images.google.com&key=AIzaSyCCQtZQUSw85jaY-BN1_tFnZOnZf2P-dpw"
+      
+      getJSON("GET", Data(), endpoint) { responseJSON in
+         print(responseJSON)
+         
+         let itemsJSON : JSON = responseJSON["items"]
+         
+         for index in 0..<itemsJSON.count {
+            print("LINK: " + String(describing: itemsJSON[index]["link"]))
+         }
+      }
    }
    
    override func viewDidLoad() {
