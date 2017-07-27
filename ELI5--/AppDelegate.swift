@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  ELI5--
 //
-//  Created by CheckoutUser on 7/12/17.
-//  Copyright © 2017 CheckoutUser. All rights reserved.
+//  Created by Duc Dao on 7/12/17.
+//  Copyright © 2017 Duc Dao. All rights reserved.
 //
 
 import UIKit

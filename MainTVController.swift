@@ -1,7 +1,6 @@
 //
 //  MainTVController.swift
 //  ELI5--
-//  Demo Version
 //
 //  Created by Duc Dao on 7/19/17.
 //  Copyright © 2017 Duc Dao. All rights reserved.
@@ -9,7 +8,7 @@
 
 import UIKit
 
-// Category colors used in ELI5 subreddit
+// Define category colors used in ELI5 subreddit
 extension UIColor {
    static var Mathematics : UIColor {
       return UIColor(red: 129/255, green: 199/255, blue: 132/255, alpha: 1.0)

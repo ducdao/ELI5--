@@ -89,9 +89,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AhV-CP-YxF">
-                                <rect key="frame" x="0.0" y="64" width="375" height="667"/>
-                            </scrollView>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="threadTitleLabel" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEE-zw-Gae">
                                 <rect key="frame" x="12" y="72" width="351" height="72"/>
                                 <constraints>
@@ -145,7 +142,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="X0t-N7-WSP" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="3XD-Xi-lj3"/>
-                            <constraint firstItem="AhV-CP-YxF" firstAttribute="top" secondItem="GAo-fK-veB" secondAttribute="bottom" id="47B-5Q-U2j"/>
                             <constraint firstItem="vbN-Fh-XnZ" firstAttribute="top" secondItem="X0t-N7-WSP" secondAttribute="bottom" constant="8" id="4Yf-El-fgZ"/>
                             <constraint firstItem="tEE-zw-Gae" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-4" id="MwZ-OC-8Pn"/>
                             <constraint firstItem="e27-jd-1Pu" firstAttribute="top" secondItem="vbN-Fh-XnZ" secondAttribute="bottom" constant="31" id="OrI-ka-Nzx"/>
@@ -155,20 +151,17 @@
                             <constraint firstItem="eHb-CE-lYg" firstAttribute="centerX" secondItem="FjD-zg-mZ9" secondAttribute="centerX" id="dzW-SM-8iw"/>
                             <constraint firstAttribute="trailingMargin" secondItem="P3H-W2-RWE" secondAttribute="trailing" constant="-8" id="efu-Qs-F4a"/>
                             <constraint firstItem="eHb-CE-lYg" firstAttribute="top" secondItem="e27-jd-1Pu" secondAttribute="bottom" constant="29" id="fQe-Ap-4er"/>
-                            <constraint firstItem="AhV-CP-YxF" firstAttribute="height" secondItem="FjD-zg-mZ9" secondAttribute="height" id="gpt-WF-H9L"/>
                             <constraint firstItem="e27-jd-1Pu" firstAttribute="centerX" secondItem="FjD-zg-mZ9" secondAttribute="centerX" id="jqw-A2-QbD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tEE-zw-Gae" secondAttribute="trailing" constant="-4" id="mCL-1j-Ky0"/>
                             <constraint firstAttribute="trailingMargin" secondItem="X0t-N7-WSP" secondAttribute="trailing" constant="-8" id="nZV-K8-vvI"/>
                             <constraint firstItem="X0t-N7-WSP" firstAttribute="top" secondItem="P3H-W2-RWE" secondAttribute="bottom" constant="21" id="qjf-Fw-qTg"/>
                             <constraint firstItem="P3H-W2-RWE" firstAttribute="leading" secondItem="FjD-zg-mZ9" secondAttribute="leadingMargin" constant="-8" id="ybC-Kn-he1"/>
-                            <constraint firstItem="AhV-CP-YxF" firstAttribute="width" secondItem="FjD-zg-mZ9" secondAttribute="width" id="zpU-SY-brv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Explanation" id="6bG-l1-Ixc"/>
                     <connections>
                         <outlet property="firstExplanationLabel" destination="P3H-W2-RWE" id="fWQ-P8-u7O"/>
                         <outlet property="firstImage" destination="vbN-Fh-XnZ" id="rsr-63-K2i"/>
-                        <outlet property="scrollView" destination="AhV-CP-YxF" id="xk7-OR-Q0o"/>
                         <outlet property="secondExplanationLabel" destination="X0t-N7-WSP" id="7K4-eo-Mr0"/>
                         <outlet property="secondImage" destination="e27-jd-1Pu" id="cBS-R6-FS9"/>
                         <outlet property="thirdImage" destination="eHb-CE-lYg" id="GON-iT-FYN"/>

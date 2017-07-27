@@ -1,7 +1,6 @@
 //
 //  ExplanationViewController.swift
 //  ELI5--
-//  Demo Version
 //
 //  Created by Duc Dao on 7/22/17.
 //  Copyright © 2017 Duc Dao. All rights reserved.
@@ -17,8 +16,6 @@ class ExplanationViewController: UIViewController {
    @IBOutlet weak var firstImage: UIImageView!
    @IBOutlet weak var secondImage: UIImageView!
    @IBOutlet weak var thirdImage: UIImageView!
-   
-   @IBOutlet weak var scrollView: UIScrollView!
    
    // The number of comments we want returned in the JSON
    let maxComments : Int = 4
@@ -40,7 +37,7 @@ class ExplanationViewController: UIViewController {
          getTitle()
          getURL()
          
-         // Get JSON pertaining to the thread
+         // Get JSON pertaining to the thread, massage it
          getJSON("GET", Data(), threadURL!) { jsonData in
             self.getTopExplanation(jsonData)
             self.getKeyExplanations()
@@ -99,13 +96,14 @@ class ExplanationViewController: UIViewController {
       
       task.resume()
    }
-   
-   // Function that gets JSON from some API
+
    func getTopExplanation(_ json : JSON) {
       let comments : JSON
       
-      // Index of the comments of interest, index 0 contains metadata for thread
+      // Index of the interest comments, index 0 contains metadata for thread
       let commentsIndex = 1
+      
+      // Start at -1 because we're using repeat while loop
       var index = -1
       
       comments = json[commentsIndex]["data"]["children"]
@@ -148,7 +146,8 @@ class ExplanationViewController: UIViewController {
       application.open(url!, options: [:], completionHandler: nil)
    }
    
-   // Get the string for some endpoint
+   // Get the string for some endpoint, shouldn't put API key directly in the code
+   // but this key will be deleted after turning this in as 436's final project
    func getLangHTTPMethodString(_ apiMethod : String) -> String {
       let apiKey = "AIzaSyCCQtZQUSw85jaY-BN1_tFnZOnZf2P-dpw"
       
@@ -190,6 +189,7 @@ class ExplanationViewController: UIViewController {
       let contentJSON : [String:AnyObject] =
          ["content" : String(describing: content) as AnyObject,
           "type" : "PLAIN_TEXT" as AnyObject]
+      
       let documentJSON : [String:AnyObject] =
          ["document" : contentJSON as AnyObject]
       
@@ -224,14 +224,9 @@ class ExplanationViewController: UIViewController {
       print("MAX ANSWER: " + firstExplanation!)
       print("   MIN ANSWER: " + secondExplanation!)
       
-      // Have all text values for text elements, update all text UI on main thread
+      // Have all text values for text elements, update all text UI
       DispatchQueue.main.async {
          self.updateUI()
-         /*self.scrollView.addSubview(self.threadTitleLabel)
-         self.scrollView.addSubview(self.firstExplanationLabel)
-         self.scrollView.addSubview(self.secondExplanationLabel)
-         
-         self.view.addSubview(self.scrollView)*/
       }
    }
    
@@ -302,8 +297,6 @@ class ExplanationViewController: UIViewController {
    }
    
    func setImageView(_ link : String, _ imageView : UIImageView) {
-      //let link = link.replacingOccurrences(of: "http:", with: "https:")
-      
       let request = URLRequest(url: URL(string: link)!)
       let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
          if error != nil {
@@ -321,8 +314,5 @@ class ExplanationViewController: UIViewController {
    
    override func viewDidLoad() {
       super.viewDidLoad()
-      
-      scrollView = UIScrollView(frame: view.bounds)
-      //scrollView.autoresizingMask = UIViewAutoresizing.flexibleHeight
    }
 }
